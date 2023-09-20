@@ -1,4 +1,4 @@
-from src.gui.main_window import init_main_window
+from gui.main_window import init_main_window
 
 
 def main():
@@ -6,4 +6,5 @@ def main():
 
 
 if __name__ == '__main__':
+    main()
     print('Hello crypto!!')
