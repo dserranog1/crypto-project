@@ -64,3 +64,8 @@ def init_main_window():
         elif event in key_gen_manager:
             generated_key = key_gen_manager[event]()
             window['-KEY-INPUT-BOX-'].update(generated_key)
+        elif 'DELETE' in event:
+            if 'CLEAR' in event:
+                window['-CLEAR-INPUT-BOX-'].update('')
+            else:
+                window['-ENCRYPTED-INPUT-BOX-'].update('')

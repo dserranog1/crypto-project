@@ -10,13 +10,13 @@ def create_title(text):
 
 
 def create_clear_text_box():
-    return sg.Multiline(
-        '', key='-CLEAR-INPUT-BOX-', size=(40, 10))
+    return [[sg.Multiline(
+        '', key='-CLEAR-INPUT-BOX-', size=(40, 10))], [sg.Button('Limpiar', key='-DELETE-CLEAR-INPUT-BOX-', pad=((0, 0), (5, 20)))]]
 
 
 def create_encrypted_text_box():
-    return sg.Multiline(
-        '', key='-ENCRYPTED-INPUT-BOX-', size=(40, 10))
+    return [[sg.Multiline(
+        '', key='-ENCRYPTED-INPUT-BOX-', size=(40, 10))],  [sg.Button('Limpiar', key='-DELETE-ENCRYPTED-INPUT-BOX-', pad=((0, 0), (5, 20)))]]
 
 
 def create_key_layout(id):
