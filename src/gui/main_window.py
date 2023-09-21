@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
-from gui.classic_algorithms.create_classic import create_classics_window
-from gui.utils.layout_positioning import center_column
+from gui.classic_algorithms.classic_window import create_classics_window
+from gui.common.custom_elements import center_column
 
 # KEYS
 CLASSICS_KEY = 'classics'

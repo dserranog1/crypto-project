@@ -1,10 +1,12 @@
 import PySimpleGUI as sg
+from gui.classic_algorithms.tabs.shift_tab import create_shift_tab
 
 
 def create_classics_window():
-    afin_tab = sg.Tab("Algoritmo afín", [[sg.Text('Afin logic goes here')]])
-    desplazamiento_tab = sg.Tab("Algoritmo desplazamiento", [
-                                [sg.Text('Desplazamiento logic goes here')]])
+
+    afin_tab = sg.Tab("Algoritmo afín", [
+        [sg.Text('Afín logic goes here')]])
+    desplazamiento_tab = create_shift_tab()
     vigenere_tab = sg.Tab("Algoritmo Vigenere", [
         [sg.Text('Vigenere logic goes here')]])
     sustitucion_tab = sg.Tab("Algoritmo sustitucion", [
