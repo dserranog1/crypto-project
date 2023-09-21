@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 from gui.classic_algorithms.classic_window import create_classics_window
 from gui.common.custom_elements import center_column
 from shift.cipher import cifrado_desplazamiento, descifrado_desplazamiento
+from shift.keygen import generate_key as generate_shift_key
 
 # KEYS
 CLASSICS_KEY = 'classics'
@@ -39,6 +40,7 @@ def init_main_window():
                       OTRO_KEY: {'create_fn': make_win2, 'window': None}, }
     algorithms_manager = {'-CIPHER-SHIFT-': cifrado_desplazamiento,
                           '-DECRYPT-SHIFT-': descifrado_desplazamiento}
+    key_gen_manager = {'-GENERATE-SHIFT-': generate_shift_key}
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
@@ -59,3 +61,6 @@ def init_main_window():
                     values['-KEY-INPUT-BOX-'], values['-ENCRYPTED-INPUT-BOX-'])
                 window['-CLEAR-INPUT-BOX-'].update(clear_text)
                 window['-KEY-INPUT-BOX-'].update(key)
+        elif event in key_gen_manager:
+            generated_key = key_gen_manager[event]()
+            window['-KEY-INPUT-BOX-'].update(generated_key)
