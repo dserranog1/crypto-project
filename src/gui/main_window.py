@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from gui.classic_algorithms.classic_window import create_classics_window
 from gui.common.custom_elements import center_column
+from shift.cipher import cifrado_desplazamiento, descifrado_desplazamiento
 
 # KEYS
 CLASSICS_KEY = 'classics'
@@ -36,6 +37,8 @@ def init_main_window():
     sg.theme('DarkGrey13')
     window_manager = {CLASSICS_KEY: {'create_fn': create_classics_window, 'window': None},
                       OTRO_KEY: {'create_fn': make_win2, 'window': None}, }
+    algorithms_manager = {'-CIPHER-SHIFT-': cifrado_desplazamiento,
+                          '-DECRYPT-SHIFT-': descifrado_desplazamiento}
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
@@ -45,3 +48,14 @@ def init_main_window():
                 break
         elif event in window_manager and not window_manager[event]['window']:
             window_manager[event]['window'] = window_manager[event]['create_fn']()
+        elif event in algorithms_manager:
+            if 'CIPHER' in event:
+                encrypted_text, key = algorithms_manager[event](
+                    values['-KEY-INPUT-BOX-'], values['-CLEAR-INPUT-BOX-'])
+                window['-ENCRYPTED-INPUT-BOX-'].update(encrypted_text)
+                window['-KEY-INPUT-BOX-'].update(key)
+            elif 'DECRYPT' in event:
+                clear_text, key = algorithms_manager[event](
+                    values['-KEY-INPUT-BOX-'], values['-ENCRYPTED-INPUT-BOX-'])
+                window['-CLEAR-INPUT-BOX-'].update(clear_text)
+                window['-KEY-INPUT-BOX-'].update(key)

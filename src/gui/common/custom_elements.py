@@ -11,16 +11,16 @@ def create_title(text):
 
 def create_clear_text_box():
     return sg.Multiline(
-        '', key='-CLEAR-INPUT-BOX', size=(40, 10))
+        '', key='-CLEAR-INPUT-BOX-', size=(40, 10))
 
 
 def create_encrypted_text_box():
     return sg.Multiline(
-        '', key='-ENCRYPTED-INPUT-BOX', size=(40, 10))
+        '', key='-ENCRYPTED-INPUT-BOX-', size=(40, 10))
 
 
 def create_key_layout():
-    return [sg.Text('Clave', pad=((0, 0), (20, 20))), sg.Input(key='-KEY-INPUT-BOX'),
+    return [sg.Text('Clave', pad=((0, 0), (20, 20))), sg.Input(key='-KEY-INPUT-BOX-'),
             sg.Button('Generar clave')]
 
 
