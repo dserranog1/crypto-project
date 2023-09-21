@@ -22,3 +22,8 @@ def create_encrypted_text_box():
 def create_key_layout():
     return [sg.Text('Clave', pad=((0, 0), (20, 20))), sg.Input(key='-KEY-INPUT-BOX'),
             sg.Button('Generar clave')]
+
+
+def create_encrypt_decrypt_buttons(id):
+    return [sg.Button('Encriptar', key='-CIPHER-'+id+'-'),
+            sg.Button('Desencriptar', key='-DECRYPT-'+id+'-')]
