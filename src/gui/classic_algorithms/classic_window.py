@@ -16,4 +16,4 @@ def create_classics_window():
     Tg = sg.TabGroup(
         [[afin_tab, desplazamiento_tab, vigenere_tab, sustitucion_tab, hill_tab]])
     layout = [[Tg], [sg.Button('Salir')]]
-    return sg.Window('Criptonita', layout, location=(3400, 100), finalize=True)
+    return sg.Window('Criptonita', layout, location=(0, 0), finalize=True)

@@ -14,7 +14,7 @@ def make_selection_window():
               [center_column([[sg.Button('Algoritmos clásicos', key=CLASSICS_KEY)],
                              [sg.Button('Algoritmos otro', key=OTRO_KEY)]])],
               [center_column([[sg.Button('Salir')]])]]
-    return sg.Window('Criptonita', layout, location=(3400, 100), finalize=True)
+    return sg.Window('Criptonita', layout, location=(0, 0), finalize=True)
 
 
 def make_win2():
