@@ -16,12 +16,12 @@ def revisar_clave(clave):
 
 def cifrado_desplazamiento(clave, mensaje):
     clave = revisar_clave(clave)
-    return convertir_letras(cifrado_clave(clave, convertir_numeros(eliminar_espacios(mayusculas(mensaje))))), clave
+    return convertir_letras(cifrado_clave(clave, convertir_numeros(eliminar_espacios(eliminar_especiales_y_numeros(mayusculas(mensaje)))))), clave
 
 
 def descifrado_desplazamiento(clave, mensaje):
     clave = revisar_clave(clave)
-    return convertir_letras(descifrado_clave(clave, convertir_numeros(eliminar_espacios(mayusculas(mensaje))))), clave
+    return convertir_letras(descifrado_clave(clave, convertir_numeros(eliminar_espacios(eliminar_especiales_y_numeros(mayusculas(mensaje)))))), clave
 
 
 def attack(texto_cifrado):
