@@ -4,7 +4,7 @@ from gui.common.custom_elements import center_column
 from shift.cipher import (
     cifrado_desplazamiento,
     descifrado_desplazamiento,
-    attack as attack_shift,
+    attack as analyze_shift,
 )
 from shift.keygen import generate_key as generate_shift_key
 from utils.helpers import format_attack
@@ -51,12 +51,43 @@ def init_main_window():
         CLASSICS: {"create_fn": create_classics_window, "window": None},
         OTRO: {"create_fn": make_win2, "window": None},
     }
+    """
+    Encryption and decryption algorithms must have the following structure
+
+    encryption_algorithm(key: str, message: str):
+        # logic goes here
+
+        return encrypted_message, key
+    
+    decryption_algorithm(key: str, message: str):
+        # logic goes here
+
+        return decrypted_message, key
+
+    Key should be validated and in case no key was provided, generate one, hence the return of the key too.
+    """
     algorithms_manager = {
         ENCRYPT_SHIFT: cifrado_desplazamiento,
         DECRYPT_SHIFT: descifrado_desplazamiento,
     }
     key_gen_manager = {GENERATE_SHIFT: generate_shift_key}
-    analyze_manager = {ANALYZE_SHIFT: attack_shift}
+
+    """
+    The analyze function must have the following structure
+    
+    analyze_message_algorithm(message):
+        # logic goes here
+
+        return [{'clave': key0, 'texto_descifrado'}, {'clave': key1, 'texto_descifrado': 'decrypted_text_with_key1'}
+        ..
+        ..
+        ..
+        {'clave': keyN, 'texto_descifrado': 'decrypted_text_with_keyN'}]
+
+    For proper formatting the analysis MUST be returned with the above-mentioned form.
+    """
+
+    analyze_manager = {ANALYZE_SHIFT: analyze_shift}
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
