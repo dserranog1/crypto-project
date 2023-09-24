@@ -14,9 +14,9 @@ def create_clear_text_box():
         '', key='-CLEAR-INPUT-BOX-', size=(40, 10))], [sg.Button('Limpiar', key='-DELETE-CLEAR-INPUT-BOX-', pad=((0, 0), (5, 20)))]]
 
 
-def create_encrypted_text_box():
+def create_encrypted_text_box(id):
     return [[sg.Multiline(
-        '', key='-ENCRYPTED-INPUT-BOX-', size=(40, 10))],  [sg.Button('Limpiar', key='-DELETE-ENCRYPTED-INPUT-BOX-', pad=((0, 0), (5, 20)))]]
+        '', key='-ENCRYPTED-INPUT-BOX-', size=(40, 10))],  [sg.Button('Limpiar', key='-DELETE-ENCRYPTED-INPUT-BOX-', pad=((0, 0), (5, 20))), sg.Button('Analizar', key='-ANALYZE-' + id + '-', pad=((0, 0), (5, 20)))]]
 
 
 def create_key_layout(id):

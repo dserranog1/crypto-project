@@ -1,8 +1,9 @@
 import PySimpleGUI as sg
 from gui.classic_algorithms.classic_window import create_classics_window
 from gui.common.custom_elements import center_column
-from shift.cipher import cifrado_desplazamiento, descifrado_desplazamiento
+from shift.cipher import cifrado_desplazamiento, descifrado_desplazamiento, attack as attack_shift
 from shift.keygen import generate_key as generate_shift_key
+from utils.helpers import format_attack
 
 # KEYS
 CLASSICS_KEY = 'classics'
@@ -41,6 +42,7 @@ def init_main_window():
     algorithms_manager = {'-CIPHER-SHIFT-': cifrado_desplazamiento,
                           '-DECRYPT-SHIFT-': descifrado_desplazamiento}
     key_gen_manager = {'-GENERATE-SHIFT-': generate_shift_key}
+    analyze_manager = {'-ANALYZE-SHIFT-': attack_shift}
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
@@ -69,3 +71,8 @@ def init_main_window():
                 window['-CLEAR-INPUT-BOX-'].update('')
             else:
                 window['-ENCRYPTED-INPUT-BOX-'].update('')
+        elif 'ANALYZE' in event:
+            output = analyze_manager[event](values['-ENCRYPTED-INPUT-BOX-'])
+            formatted_output = format_attack(output)
+            sg.popup_scrolled(
+                formatted_output, title='Resultados del análisis', size=(50, 10),)
