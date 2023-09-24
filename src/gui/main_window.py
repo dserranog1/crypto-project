@@ -8,11 +8,7 @@ from shift.cipher import (
 )
 from shift.keygen import generate_key as generate_shift_key
 from utils.helpers import format_attack
-
-# KEYS
-CLASSICS_KEY = "classics"
-SELECTION_KEY = "selection"
-OTRO_KEY = "otro"
+from globals import *
 
 
 def make_selection_window():
@@ -21,8 +17,8 @@ def make_selection_window():
         [
             center_column(
                 [
-                    [sg.Button("Algoritmos clásicos", key=CLASSICS_KEY)],
-                    [sg.Button("Algoritmos otro", key=OTRO_KEY)],
+                    [sg.Button("Algoritmos clásicos", key=CLASSICS)],
+                    [sg.Button("Algoritmos otro", key=OTRO)],
                 ]
             )
         ],
@@ -52,15 +48,15 @@ def close_window(window_manager, window):
 def init_main_window():
     sg.theme("DarkGrey13")
     window_manager = {
-        CLASSICS_KEY: {"create_fn": create_classics_window, "window": None},
-        OTRO_KEY: {"create_fn": make_win2, "window": None},
+        CLASSICS: {"create_fn": create_classics_window, "window": None},
+        OTRO: {"create_fn": make_win2, "window": None},
     }
     algorithms_manager = {
-        "-CIPHER-SHIFT-": cifrado_desplazamiento,
-        "-DECRYPT-SHIFT-": descifrado_desplazamiento,
+        ENCRYPT_SHIFT: cifrado_desplazamiento,
+        DECRYPT_SHIFT: descifrado_desplazamiento,
     }
-    key_gen_manager = {"-GENERATE-SHIFT-": generate_shift_key}
-    analyze_manager = {"-ANALYZE-SHIFT-": attack_shift}
+    key_gen_manager = {GENERATE_SHIFT: generate_shift_key}
+    analyze_manager = {ANALYZE_SHIFT: attack_shift}
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
@@ -71,28 +67,28 @@ def init_main_window():
         elif event in window_manager and not window_manager[event]["window"]:
             window_manager[event]["window"] = window_manager[event]["create_fn"]()
         elif event in algorithms_manager:
-            if "CIPHER" in event:
+            if "ENCRYPT" in event:
                 encrypted_text, key = algorithms_manager[event](
-                    values["-KEY-INPUT-BOX-"], values["-CLEAR-INPUT-BOX-"]
+                    values[KEY_INPUT], values[CLEAR_TEXT_INPUT_BOX]
                 )
-                window["-ENCRYPTED-INPUT-BOX-"].update(encrypted_text)
-                window["-KEY-INPUT-BOX-"].update(key)
+                window[ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
+                window[KEY_INPUT].update(key)
             elif "DECRYPT" in event:
                 clear_text, key = algorithms_manager[event](
-                    values["-KEY-INPUT-BOX-"], values["-ENCRYPTED-INPUT-BOX-"]
+                    values[KEY_INPUT], values[ENCRYPTED_TEXT_INPUT_BOX]
                 )
-                window["-CLEAR-INPUT-BOX-"].update(clear_text)
-                window["-KEY-INPUT-BOX-"].update(key)
+                window[CLEAR_TEXT_INPUT_BOX].update(clear_text)
+                window[KEY_INPUT].update(key)
         elif event in key_gen_manager:
             generated_key = key_gen_manager[event]()
-            window["-KEY-INPUT-BOX-"].update(generated_key)
+            window[KEY_INPUT].update(generated_key)
         elif "DELETE" in event:
             if "CLEAR" in event:
-                window["-CLEAR-INPUT-BOX-"].update("")
+                window[CLEAR_TEXT_INPUT_BOX].update("")
             else:
-                window["-ENCRYPTED-INPUT-BOX-"].update("")
+                window[ENCRYPTED_TEXT_INPUT_BOX].update("")
         elif "ANALYZE" in event:
-            output = analyze_manager[event](values["-ENCRYPTED-INPUT-BOX-"])
+            output = analyze_manager[event](values[ENCRYPTED_TEXT_INPUT_BOX])
             formatted_output = format_attack(output)
             sg.popup_scrolled(
                 formatted_output,

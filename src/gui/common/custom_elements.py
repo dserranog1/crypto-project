@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from globals import *
 
 
 def center_column(layout):
@@ -18,14 +19,14 @@ def create_title(text):
 
 def create_clear_text_box():
     return [
-        [sg.Multiline("", key="-CLEAR-INPUT-BOX-", size=(40, 10))],
+        [sg.Multiline("", key=CLEAR_TEXT_INPUT_BOX, size=(40, 10))],
         [sg.Button("Limpiar", key="-DELETE-CLEAR-INPUT-BOX-", pad=((0, 0), (5, 20)))],
     ]
 
 
 def create_encrypted_text_box(id):
     return [
-        [sg.Multiline("", key="-ENCRYPTED-INPUT-BOX-", size=(40, 10))],
+        [sg.Multiline("", key=ENCRYPTED_TEXT_INPUT_BOX, size=(40, 10))],
         [
             sg.Button(
                 "Limpiar", key="-DELETE-ENCRYPTED-INPUT-BOX-", pad=((0, 0), (5, 20))
@@ -38,13 +39,13 @@ def create_encrypted_text_box(id):
 def create_key_layout(id):
     return [
         sg.Text("Clave", pad=((0, 0), (20, 20))),
-        sg.Input(key="-KEY-INPUT-BOX-"),
+        sg.Input(key=KEY_INPUT),
         sg.Button("Generar clave", key="-GENERATE-" + id + "-"),
     ]
 
 
 def create_encrypt_decrypt_buttons(id):
     return [
-        sg.Button("Encriptar", key="-CIPHER-" + id + "-"),
+        sg.Button("Encriptar", key="-ENCRYPT-" + id + "-"),
         sg.Button("Desencriptar", key="-DECRYPT-" + id + "-"),
     ]
