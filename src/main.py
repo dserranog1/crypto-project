@@ -5,6 +5,6 @@ def main():
     init_main_window()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-    print('Hello crypto!!')
+    print("Hello crypto!!")
