@@ -2,10 +2,28 @@ from permutation.analysis import *
 from permutation.keygen import *
 
 
+
+def validar_lista_numeros(lista):
+    # Verificar que todos los elementos sean números y estén en el rango [1, len(lista)]
+    n = len(lista)
+    numeros_validos = set(range(1, n + 1))
+
+    for elemento in lista:
+        if not isinstance(elemento, int) or elemento not in numeros_validos:
+            return False
+
+    # Verificar que no haya números repetidos
+    if len(lista) != len(set(lista)):
+        return False
+
+    return True
+
 def revisar_clave(clave):
     if not clave:
         clave = generate_key()
     elif not isinstance(clave, list):
+        clave = generate_key() 
+    elif not validar_lista_numeros:
         clave = generate_key() 
     return clave
 
