@@ -8,3 +8,7 @@ def format_attack(data):
             "Clave" + item["clave"] + ": " + item["texto_descifrado"] + "\n"
         )
     return "".join(formatted_data)
+
+
+def format_input(input):
+    return input.replace("(", "").replace(")", "").replace(",", "")

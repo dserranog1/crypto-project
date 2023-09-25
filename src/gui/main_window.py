@@ -9,7 +9,7 @@ from shift.cipher import (
 from shift.keygen import generate_key as generate_shift_key
 from permutation.cipher import cifrado_permutacion, descifrado_permutacion
 from permutation.keygen import generate_key as generate_permutation_key
-from utils.helpers import format_attack
+from utils.helpers import format_attack, format_input
 from globals import *
 
 
@@ -114,14 +114,14 @@ def init_main_window():
             algorithm, action = algorithm_and_action[0], algorithm_and_action[1]
             if action in ENCRYPT:
                 encrypted_text, key = algorithms_manager[algorithm][ENCRYPT](
-                    values[algorithm + KEY_INPUT],
+                    format_input(values[algorithm + KEY_INPUT]),
                     values[algorithm + CLEAR_TEXT_INPUT_BOX],
                 )
                 window[algorithm + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
                 window[algorithm + KEY_INPUT].update(key)
             elif action in DECRYPT:
                 clear_text, key = algorithms_manager[algorithm][DECRYPT](
-                    values[algorithm + KEY_INPUT],
+                    format_input(values[algorithm + KEY_INPUT]),
                     values[algorithm + ENCRYPTED_TEXT_INPUT_BOX],
                 )
                 window[algorithm + CLEAR_TEXT_INPUT_BOX].update(clear_text)
