@@ -17,35 +17,43 @@ def create_title(text):
     )
 
 
-def create_clear_text_box():
+def create_clear_text_box(algorithm):
     return [
-        [sg.Multiline("", key=CLEAR_TEXT_INPUT_BOX, size=(40, 10))],
-        [sg.Button("Limpiar", key="-DELETE-CLEAR-INPUT-BOX-", pad=((0, 0), (5, 20)))],
-    ]
-
-
-def create_encrypted_text_box(id):
-    return [
-        [sg.Multiline("", key=ENCRYPTED_TEXT_INPUT_BOX, size=(40, 10))],
+        [sg.Multiline("", key=algorithm + CLEAR_TEXT_INPUT_BOX, size=(40, 10))],
         [
             sg.Button(
-                "Limpiar", key="-DELETE-ENCRYPTED-INPUT-BOX-", pad=((0, 0), (5, 20))
-            ),
-            sg.Button("Analizar", key="-ANALYZE-" + id + "-", pad=((0, 0), (5, 20))),
+                "Limpiar",
+                key=algorithm + DELETE + CLEAR_TEXT_INPUT_BOX,
+                pad=((0, 0), (5, 20)),
+            )
         ],
     ]
 
 
-def create_key_layout(id):
+def create_encrypted_text_box(algorithm):
     return [
-        sg.Text("Clave", pad=((0, 0), (20, 20))),
-        sg.Input(key=KEY_INPUT),
-        sg.Button("Generar clave", key="-GENERATE-" + id + "-"),
+        [sg.Multiline("", key=algorithm + ENCRYPTED_TEXT_INPUT_BOX, size=(40, 10))],
+        [
+            sg.Button(
+                "Limpiar",
+                key=algorithm + DELETE + ENCRYPTED_TEXT_INPUT_BOX,
+                pad=((0, 0), (5, 20)),
+            ),
+            sg.Button("Analizar", key=algorithm + ANALYZE, pad=((0, 0), (5, 20))),
+        ],
     ]
 
 
-def create_encrypt_decrypt_buttons(id):
+def create_key_layout(algorithm):
     return [
-        sg.Button("Encriptar", key="-ENCRYPT-" + id + "-"),
-        sg.Button("Desencriptar", key="-DECRYPT-" + id + "-"),
+        sg.Text("Clave", pad=((0, 0), (20, 20))),
+        sg.Input(key=algorithm + KEY_INPUT),
+        sg.Button("Generar clave", key=algorithm + KEY_GEN),
+    ]
+
+
+def create_encrypt_decrypt_buttons(algorithm):
+    return [
+        sg.Button("Encriptar", key=algorithm + ENCRYPT),
+        sg.Button("Desencriptar", key=algorithm + DECRYPT),
     ]

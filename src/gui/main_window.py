@@ -7,6 +7,8 @@ from shift.cipher import (
     attack as analyze_shift,
 )
 from shift.keygen import generate_key as generate_shift_key
+from permutation.cipher import cifrado_permutacion, descifrado_permutacion
+from permutation.keygen import generate_key as generate_permutation_key
 from utils.helpers import format_attack
 from globals import *
 
@@ -67,11 +69,18 @@ def init_main_window():
     Key should be validated and in case no key was provided, generate one, hence the return of the key too.
     """
     algorithms_manager = {
-        ENCRYPT_SHIFT: cifrado_desplazamiento,
-        DECRYPT_SHIFT: descifrado_desplazamiento,
+        SHIFT: {
+            ENCRYPT: cifrado_desplazamiento,
+            DECRYPT: descifrado_desplazamiento,
+            KEY_GEN: generate_shift_key,
+            ANALYZE: analyze_shift,
+        },
+        PERMUTATION: {
+            ENCRYPT: cifrado_permutacion,
+            DECRYPT: descifrado_permutacion,
+            KEY_GEN: generate_permutation_key,
+        },
     }
-    key_gen_manager = {GENERATE_SHIFT: generate_shift_key}
-
     """
     The analyze function must have the following structure
     
@@ -87,42 +96,51 @@ def init_main_window():
     For proper formatting the analysis MUST be returned with the above-mentioned form.
     """
 
-    analyze_manager = {ANALYZE_SHIFT: analyze_shift}
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
+        # Retrieve in case the action was an algorithm-related action
+        algorithm_and_action = event.split("-", 1)
+        # If the action has to do with exiting a window, we handle that first
         if event == sg.WIN_CLOSED or event == "Salir":
             window.close()
             if not close_window(window_manager, window):
                 break
         elif event in window_manager and not window_manager[event]["window"]:
             window_manager[event]["window"] = window_manager[event]["create_fn"]()
-        elif event in algorithms_manager:
-            if "ENCRYPT" in event:
-                encrypted_text, key = algorithms_manager[event](
-                    values[KEY_INPUT], values[CLEAR_TEXT_INPUT_BOX]
+        elif algorithm_and_action[0] in algorithms_manager:
+            # If action is an algorithm-related, the action/element will be in the second position
+            # We unpack them for better readability
+            algorithm, action = algorithm_and_action[0], algorithm_and_action[1]
+            if action in ENCRYPT:
+                encrypted_text, key = algorithms_manager[algorithm][ENCRYPT](
+                    values[algorithm + KEY_INPUT],
+                    values[algorithm + CLEAR_TEXT_INPUT_BOX],
                 )
-                window[ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
-                window[KEY_INPUT].update(key)
-            elif "DECRYPT" in event:
-                clear_text, key = algorithms_manager[event](
-                    values[KEY_INPUT], values[ENCRYPTED_TEXT_INPUT_BOX]
+                window[algorithm + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
+                window[algorithm + KEY_INPUT].update(key)
+            elif action in DECRYPT:
+                clear_text, key = algorithms_manager[algorithm][DECRYPT](
+                    values[algorithm + KEY_INPUT],
+                    values[algorithm + ENCRYPTED_TEXT_INPUT_BOX],
                 )
-                window[CLEAR_TEXT_INPUT_BOX].update(clear_text)
-                window[KEY_INPUT].update(key)
-        elif event in key_gen_manager:
-            generated_key = key_gen_manager[event]()
-            window[KEY_INPUT].update(generated_key)
-        elif "DELETE" in event:
-            if "CLEAR" in event:
-                window[CLEAR_TEXT_INPUT_BOX].update("")
-            else:
-                window[ENCRYPTED_TEXT_INPUT_BOX].update("")
-        elif "ANALYZE" in event:
-            output = analyze_manager[event](values[ENCRYPTED_TEXT_INPUT_BOX])
-            formatted_output = format_attack(output)
-            sg.popup_scrolled(
-                formatted_output,
-                title="Resultados del análisis",
-                size=(50, 10),
-            )
+                window[algorithm + CLEAR_TEXT_INPUT_BOX].update(clear_text)
+                window[algorithm + KEY_INPUT].update(key)
+            elif action in KEY_GEN:
+                generated_key = algorithms_manager[algorithm][KEY_GEN]()
+                window[algorithm + KEY_INPUT].update(generated_key)
+            elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
+                action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
+            ):
+                input_box = action.split("-", 1)[1]
+                window[algorithm + "-" + input_box].update("")
+            elif action in ANALYZE:
+                output = algorithms_manager[algorithm][ANALYZE](
+                    values[algorithm + ENCRYPTED_TEXT_INPUT_BOX]
+                )
+                formatted_output = format_attack(output)
+                sg.popup_scrolled(
+                    formatted_output,
+                    title="Resultados del análisis",
+                    size=(50, 10),
+                )
