@@ -11,6 +11,7 @@ from permutation.cipher import cifrado_permutacion, descifrado_permutacion
 from permutation.keygen import generate_key as generate_permutation_key
 from utils.helpers import format_attack, format_input
 from globals import *
+from hill.cipher import encryption_algorithm, decryption_algorithm, generate_key
 
 
 def make_selection_window():
@@ -80,6 +81,11 @@ def init_main_window():
             DECRYPT: descifrado_permutacion,
             KEY_GEN: generate_permutation_key,
         },
+        HILL: {
+            ENCRYPT: encryption_algorithm,
+            DECRYPT: decryption_algorithm,
+            KEY_GEN: generate_key
+        }
     }
     """
     The analyze function must have the following structure
