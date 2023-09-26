@@ -7,9 +7,8 @@ def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el us
   mensaje = eliminar_caracteres_invalidos(mensaje) #Se trabaja todo en mayúsculas y sin caracteres especiales ·$%/(?= ' '
   clave = eliminar_caracteres_invalidos(clave)
   
-  for letra in clave:
-    if letra not in alfabeto: #No se aceptan símbolos ni caracteres especiales...
-      clave = generar_clave()
+  if len(clave) == 0:
+    clave = generar_clave()
 
   mensaje_cifrado = '' #Se parte de un string vacío
 
@@ -31,9 +30,8 @@ def descifrado_vigenere(clave, mensaje_cifrado): #Análogamente funciona esta fu
   mensaje = eliminar_caracteres_invalidos(mensaje) #Se trabaja todo en mayúsculas y sin caracteres especiales ·$%/(?= ' '
   clave = eliminar_caracteres_invalidos(clave)
   
-  for letra in clave:
-    if letra not in alfabeto: #No se aceptan símbolos ni caracteres especiales...
-      clave = generar_clave()
+  if len(clave) == 0:
+    clave = generar_clave()
 
   mensaje_claro = ''
   clave_repetida = clave * (len(mensaje_cifrado) // len(clave) + 1)
@@ -44,8 +42,8 @@ def descifrado_vigenere(clave, mensaje_cifrado): #Análogamente funciona esta fu
 
     posicion_descifrada = posicion_cifrada - posicion_clave % len(alfabeto) + 26 if posicion_cifrada - posicion_clave < 0 else posicion_cifrada - posicion_clave
     #En la variable anterior se hace las operaciones inversas, para descrifrar el mensaje
-    
-    mensaje_claro += alfabeto[posicion_descifrada]
 
+    mensaje_claro += alfabeto[posicion_descifrada]
+    
   return mensaje_claro, clave
   
