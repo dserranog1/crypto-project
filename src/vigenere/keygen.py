@@ -2,7 +2,7 @@
 
 from random import randint
 
-lista_claves = ['eagle', 'house', 'horse', 'heaven', 'rat', 'hell', 'esplendor', 'thisisnotakey', 'airplane', 'toronja']
+lista_claves = ['EAGLE', 'HOUSE', 'HORSE', 'HEAVEN', 'RAT', 'HELL', 'ESPLENDOR', 'THISISNOTAKEY', 'AIRPLANE', 'TORONJA']
 
 def generar_clave():
   clave = lista_claves[randint(0, len(lista_claves))]
