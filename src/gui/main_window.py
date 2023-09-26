@@ -9,6 +9,8 @@ from shift.cipher import (
 from shift.keygen import generate_key as generate_shift_key
 from permutation.cipher import cifrado_permutacion, descifrado_permutacion
 from permutation.keygen import generate_key as generate_permutation_key
+from vigenere.cipher import cifrado_vigenere, descifrado_vigenere
+from vigenere.keygen import generar_clave as generar_clave_vigenere
 from utils.helpers import format_attack, format_input
 from globals import *
 from hill.cipher import encryption_algorithm, decryption_algorithm, generate_key
@@ -27,7 +29,7 @@ def make_selection_window():
         ],
         [center_column([[sg.Button("Salir")]])],
     ]
-    return sg.Window("Criptonita", layout, location=(0, 0), finalize=True)
+    return sg.Window("Criptonita", layout, location=(0, 0), finalize=True, disable_close=True)
 
 
 def make_win2():
@@ -37,7 +39,7 @@ def make_win2():
         [sg.Text(size=(25, 1), k="-OUTPUT-")],
         [sg.Button("Erase"), sg.Button("Popup"), sg.Button("Salir")],
     ]
-    return sg.Window("Second Window", layout, finalize=True)
+    return sg.Window("Second Window", layout, finalize=True, disable_close=True)
 
 
 def close_window(window_manager, window):
@@ -81,11 +83,11 @@ def init_main_window():
             DECRYPT: descifrado_permutacion,
             KEY_GEN: generate_permutation_key,
         },
-        HILL: {
-            ENCRYPT: encryption_algorithm,
-            DECRYPT: decryption_algorithm,
-            KEY_GEN: generate_key
-        }
+        VIGENERE: {
+            ENCRYPT: cifrado_vigenere,
+            DECRYPT: descifrado_vigenere,
+            KEY_GEN: generar_clave_vigenere,
+        },
     }
     """
     The analyze function must have the following structure
@@ -134,6 +136,7 @@ def init_main_window():
                 window[algorithm + KEY_INPUT].update(key)
             elif action in KEY_GEN:
                 generated_key = algorithms_manager[algorithm][KEY_GEN]()
+                print(generated_key)
                 window[algorithm + KEY_INPUT].update(generated_key)
             elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
                 action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
