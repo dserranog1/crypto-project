@@ -2,7 +2,7 @@
 
 alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-def cifrado_por_sustitucion(mensaje, clave): #Necesita 2 argumentos digitados por el usuario
+def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el usuario
 
   mensaje = mensaje.upper() #Se trabaja todo en mayúsculas
   clave = clave.upper()
@@ -25,10 +25,10 @@ def cifrado_por_sustitucion(mensaje, clave): #Necesita 2 argumentos digitados po
 
     mensaje_cifrado += alfabeto[posicion_cifrada] #Se busca el índice en el alfabeto y se van sumando en el string vacío
 
-  return mensaje_cifrado
+  return mensaje_cifrado, clave
 
 
-def descifrado_por_sustitucion(mensaje_cifrado, clave): #Análogamente funciona esta función al cifrado
+def descifrado_vigenere(clave, mensaje_cifrado): #Análogamente funciona esta función al cifrado
 
   mensaje_cifrado = mensaje_cifrado.upper()
   clave = clave.upper()
@@ -51,5 +51,5 @@ def descifrado_por_sustitucion(mensaje_cifrado, clave): #Análogamente funciona 
     
     mensaje_claro += alfabeto[posicion_descifrada]
 
-  return mensaje_claro
+  return mensaje_claro, clave
   
