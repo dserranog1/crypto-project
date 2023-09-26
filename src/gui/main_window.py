@@ -28,7 +28,7 @@ def make_selection_window():
         ],
         [center_column([[sg.Button("Salir")]])],
     ]
-    return sg.Window("Criptonita", layout, location=(0, 0), finalize=True)
+    return sg.Window("Criptonita", layout, location=(0, 0), finalize=True, disable_close=True)
 
 
 def make_win2():
@@ -38,7 +38,7 @@ def make_win2():
         [sg.Text(size=(25, 1), k="-OUTPUT-")],
         [sg.Button("Erase"), sg.Button("Popup"), sg.Button("Salir")],
     ]
-    return sg.Window("Second Window", layout, finalize=True)
+    return sg.Window("Second Window", layout, finalize=True, disable_close=True)
 
 
 def close_window(window_manager, window):

@@ -26,4 +26,4 @@ def create_classics_window():
         ]
     )
     layout = [[Tg], [sg.Button("Salir")]]
-    return sg.Window("Criptonita", layout, location=(0, 0), finalize=True)
+    return sg.Window("Criptonita", layout, location=(0, 0), finalize=True, disable_close=True)
