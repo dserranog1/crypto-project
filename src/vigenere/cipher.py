@@ -4,12 +4,9 @@ alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el usuario
 
-  mensaje = mensaje.upper() #Se trabaja todo en mayúsculas
-  clave = clave.upper()
+  mensaje = eliminar_caracteres_invalidos(mensaje) #Se trabaja todo en mayúsculas y sin caracteres especiales ·$%/(?= ' '
+  clave = eliminar_caracteres_invalidos(clave)
   
-  for letra in mensaje:
-    if letra not in alfabeto: #Se valida que hayan solo letras del abecedario en inglés
-      mensaje = 
   for letra in clave:
     if letra not in alfabeto: #No se aceptan símbolos ni caracteres especiales...
       clave = generar_clave()
@@ -31,14 +28,12 @@ def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el us
 
 def descifrado_vigenere(clave, mensaje_cifrado): #Análogamente funciona esta función al cifrado
 
-  mensaje_cifrado = mensaje_cifrado.upper()
-  clave = clave.upper()
-  for letra in mensaje_cifrado:
-    if letra not in alfabeto:
-      print('El mensaje cifrado contiene caracteres no válidos')
+  mensaje = eliminar_caracteres_invalidos(mensaje) #Se trabaja todo en mayúsculas y sin caracteres especiales ·$%/(?= ' '
+  clave = eliminar_caracteres_invalidos(clave)
+  
   for letra in clave:
-    if letra not in alfabeto:
-      print('La clave contiene caracteres no válidos')
+    if letra not in alfabeto: #No se aceptan símbolos ni caracteres especiales...
+      clave = generar_clave()
 
   mensaje_claro = ''
   clave_repetida = clave * (len(mensaje_cifrado) // len(clave) + 1)
