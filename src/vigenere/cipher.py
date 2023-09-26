@@ -1,5 +1,8 @@
 # Module for cipher and decipher logic
 
+from vigenere.analysis import *
+from vigenere.keygen import *
+
 alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el usuario
