@@ -1,5 +1,15 @@
 # Module for crypto analysis
 
-def eliminar_espacios(mensaje):
-    mensaje_sin_espacios = mensaje.replace(" ", "")
-    return mensaje_sin_espacios
+alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+def eliminar_caracteres_invalidos(mensaje):
+
+  mensaje = mensaje.upper()
+    
+  for letra in mensaje:
+      if letra not in alfabeto:
+          mensaje = mensaje.replace(letra, '')
+      else:
+          pass
+
+  return mensaje
