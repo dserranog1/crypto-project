@@ -3,6 +3,17 @@
 import numpy as np
 import math
 
+def key2string(key):
+
+    string_key = ""
+    for i in range(key.shape[0]):
+        for j in range(key.shape[1]):
+            string_key += str(key[i,j])+" "
+        string_key += ";"
+
+    
+    return string_key.replace(" ;", ";")[:-1]
+
 def validate_key(key_matrix):
     # Check if the key matrix is square
     if key_matrix.shape[0] != key_matrix.shape[1]:
@@ -25,9 +36,10 @@ def generate_key(key_size):
 
 def encryption_algorithm(key, message):
     # Validate the key or generate one if not provided
-
-    key = np.array([row.split(" ") for row in key.split(",")]).astype(int)
-
+    print(key)
+    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+    print(key.shape)
+    print(key)
     if key is None:
         key = generate_key(len(message))
     
@@ -56,11 +68,11 @@ def encryption_algorithm(key, message):
         encrypted_chunk = ''.join([chr(index + ord('A')) for index in encrypted_chunk_indices])
         encrypted_message += encrypted_chunk
 
-    return encrypted_message, key
+    return encrypted_message, key2string(key)
 
 def decryption_algorithm(key, message):
 
-    key = np.array([row.split(" ") for row in key.split(",")]).astype(int)
+    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
 
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
@@ -95,5 +107,5 @@ def decryption_algorithm(key, message):
         decrypted_chunk = ''.join([chr(int(index) + ord('A')) for index in decrypted_chunk_indices])
         decrypted_message += decrypted_chunk
 
-    return decrypted_message, key
+    return decrypted_message, key2string(key)
 

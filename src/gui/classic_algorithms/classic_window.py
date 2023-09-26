@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from gui.classic_algorithms.tabs.shift_tab import create_shift_tab
 from gui.classic_algorithms.tabs.permutation_tab import create_permutation_tab
 from gui.classic_algorithms.tabs.vigenere_tab import create_vigenere_tab
-
+from gui.classic_algorithms.tabs.hill_tab import create_hill_tab
 
 def create_classics_window():
     afin_tab = sg.Tab("Algoritmo afín", [[sg.Text("Afín logic goes here")]])
@@ -12,7 +12,7 @@ def create_classics_window():
     sustitucion_tab = sg.Tab(
         "Algoritmo sustitucion", [[sg.Text("Sustitucion logic goes here")]]
     )
-    hill_tab = sg.Tab("Algoritmo hill", [[sg.Text("Hill logic goes here")]])
+    hill_tab = create_hill_tab()
     Tg = sg.TabGroup(
         [
             [

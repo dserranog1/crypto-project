@@ -13,7 +13,7 @@ from vigenere.cipher import cifrado_vigenere, descifrado_vigenere
 from vigenere.keygen import generar_clave as generar_clave_vigenere
 from utils.helpers import format_attack, format_input
 from globals import *
-from hill.cipher import encryption_algorithm, decryption_algorithm, generate_key
+from hill.cipher import encryption_algorithm as hill_encrypt, decryption_algorithm as hill_decrypt, generate_key as hill_keygen
 
 
 def make_selection_window():
@@ -88,6 +88,11 @@ def init_main_window():
             DECRYPT: descifrado_vigenere,
             KEY_GEN: generar_clave_vigenere,
         },
+        HILL: {
+            ENCRYPT: hill_encrypt,
+            DECRYPT: hill_decrypt,
+            KEY_GEN: hill_keygen
+        }
     }
     """
     The analyze function must have the following structure
