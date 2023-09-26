@@ -30,7 +30,19 @@ def create_clear_text_box(algorithm):
     ]
 
 
-def create_encrypted_text_box(algorithm):
+def create_encrypted_text_box(algorithm, has_analyze=True):
+    if has_analyze:
+        return [
+            [sg.Multiline("", key=algorithm + ENCRYPTED_TEXT_INPUT_BOX, size=(40, 10))],
+            [
+                sg.Button(
+                    "Limpiar",
+                    key=algorithm + DELETE + ENCRYPTED_TEXT_INPUT_BOX,
+                    pad=((0, 0), (5, 20)),
+                ),
+                sg.Button("Analizar", key=algorithm + ANALYZE, pad=((0, 0), (5, 20))),
+            ],
+        ]
     return [
         [sg.Multiline("", key=algorithm + ENCRYPTED_TEXT_INPUT_BOX, size=(40, 10))],
         [
@@ -39,7 +51,6 @@ def create_encrypted_text_box(algorithm):
                 key=algorithm + DELETE + ENCRYPTED_TEXT_INPUT_BOX,
                 pad=((0, 0), (5, 20)),
             ),
-            sg.Button("Analizar", key=algorithm + ANALYZE, pad=((0, 0), (5, 20))),
         ],
     ]
 
