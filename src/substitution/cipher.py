@@ -7,15 +7,15 @@ def cifrado_por_sustitucion(mensaje, clave): #Necesita 2 argumentos digitados po
   mensaje = mensaje.upper() #Se trabaja todo en mayúsculas
   clave = clave.upper()
   for letra in mensaje:
-    if letra not in alfabeto: #Se validad que hayan solo letras del abecedario en inglés
+    if letra not in alfabeto: #Se valida que hayan solo letras del abecedario en inglés
       print('El mensaje contiene caracteres no válidos')
   for letra in clave:
-    if letra not in alfabeto: #No se aceptan símbolos ni carcteres especiales...
+    if letra not in alfabeto: #No se aceptan símbolos ni caracteres especiales...
       print('La clave contiene caracteres no válidos')
 
   mensaje_cifrado = '' #Se parte de un string vacío
 
-  clave_repetida = clave * (len(mensaje) // len(clave) + 1) #Cuantas veces se repite la clave en el mensaje en claro
+  clave_repetida = clave * (len(mensaje) // len(clave) + 1) #Cuántas veces se repite la clave en el mensaje en claro
 
   for letra_mensaje, letra_clave in zip(mensaje, clave_repetida):
     posicion_mensaje = alfabeto.find(letra_mensaje) #Son las posiciones de cada letra en el mensaje 
