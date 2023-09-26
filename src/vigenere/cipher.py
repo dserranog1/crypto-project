@@ -30,7 +30,7 @@ def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el us
 
 def descifrado_vigenere(clave, mensaje_cifrado): #Análogamente funciona esta función al cifrado
 
-  mensaje = eliminar_caracteres_invalidos(mensaje) #Se trabaja todo en mayúsculas y sin caracteres especiales ·$%/(?= ' '
+  mensaje = eliminar_caracteres_invalidos(mensaje_cifrado) #Se trabaja todo en mayúsculas y sin caracteres especiales ·$%/(?= ' '
   clave = eliminar_caracteres_invalidos(clave)
   
   if len(clave) == 0:

@@ -9,6 +9,8 @@ from shift.cipher import (
 from shift.keygen import generate_key as generate_shift_key
 from permutation.cipher import cifrado_permutacion, descifrado_permutacion
 from permutation.keygen import generate_key as generate_permutation_key
+from vigenere.cipher import cifrado_vigenere, descifrado_vigenere
+from vigenere.keygen import generar_clave as generar_clave_vigenere
 from utils.helpers import format_attack, format_input
 from globals import *
 
@@ -80,6 +82,11 @@ def init_main_window():
             DECRYPT: descifrado_permutacion,
             KEY_GEN: generate_permutation_key,
         },
+        VIGENERE: {
+            ENCRYPT: cifrado_vigenere,
+            DECRYPT: descifrado_vigenere,
+            KEY_GEN: generar_clave_vigenere,
+        },
     }
     """
     The analyze function must have the following structure
@@ -128,6 +135,7 @@ def init_main_window():
                 window[algorithm + KEY_INPUT].update(key)
             elif action in KEY_GEN:
                 generated_key = algorithms_manager[algorithm][KEY_GEN]()
+                print(generated_key)
                 window[algorithm + KEY_INPUT].update(generated_key)
             elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
                 action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
