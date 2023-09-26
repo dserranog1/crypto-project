@@ -9,10 +9,10 @@ def cifrado_vigenere(clave, mensaje): #Necesita 2 argumentos digitados por el us
   
   for letra in mensaje:
     if letra not in alfabeto: #Se valida que hayan solo letras del abecedario en inglés
-      print('El mensaje contiene caracteres no válidos')
+      mensaje = 
   for letra in clave:
     if letra not in alfabeto: #No se aceptan símbolos ni caracteres especiales...
-      clave = definir_clave()
+      clave = generar_clave()
 
   mensaje_cifrado = '' #Se parte de un string vacío
 
