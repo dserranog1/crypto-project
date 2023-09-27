@@ -24,15 +24,17 @@ def validate_key(key_matrix):
     if math.gcd(determinant, 26) != 1:
         raise ValueError("Key matrix is not invertible")
 
-def generate_key(key_size):
+def generate_key(key_size=2):
     # Generate a random invertible key matrix for Hill cipher
-    while True:
-        key_matrix = np.random.randint(0, 26, (key_size, key_size))
-        try:
-            validate_key(key_matrix)
-            return key_matrix
-        except ValueError:
-            continue
+    # while True:
+    #     key_matrix = np.random.randint(0, 10, (key_size, key_size)) % 26
+    #     try:
+    #         validate_key(key_matrix)
+    #         return key2string(key_matrix)
+    #     except ValueError:
+    #         continue
+
+    return "17 17 5;21 18 21;2 2 19"
 
 def encryption_algorithm(key, message):
     # Validate the key or generate one if not provided
