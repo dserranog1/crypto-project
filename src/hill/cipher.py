@@ -24,17 +24,20 @@ def validate_key(key_matrix):
     if math.gcd(determinant, 26) != 1:
         raise ValueError("Key matrix is not invertible")
 
-def generate_key(key_size=2):
-    # Generate a random invertible key matrix for Hill cipher
-    # while True:
-    #     key_matrix = np.random.randint(0, 10, (key_size, key_size)) % 26
-    #     try:
-    #         validate_key(key_matrix)
-    #         return key2string(key_matrix)
-    #     except ValueError:
-    #         continue
+    if not np.linalg.det(key_matrix).is_integer():
+        raise ValueError("Key determinant is not integer")
 
-    return "17 17 5;21 18 21;2 2 19"
+def generate_key(key_size=3):
+    # Generate a random invertible key matrix for Hill cipher
+    while True:
+        key_matrix = np.random.randint(0, 10, (key_size, key_size)) % 26
+        try:
+            validate_key(key_matrix)
+            return key2string(key_matrix)
+        except ValueError:
+            continue
+
+    # return "17 17 5;21 18 21;2 2 19"
 
 def encryption_algorithm(key, message):
     # Validate the key or generate one if not provided
@@ -42,6 +45,7 @@ def encryption_algorithm(key, message):
     key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     print(key.shape)
     print(key)
+    print(np.linalg.det(key))
     if key is None:
         key = generate_key(len(message))
     
