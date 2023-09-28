@@ -12,3 +12,10 @@ def format_attack(data):
 
 def format_input(input):
     return input.replace("(", "").replace(")", "").replace(",", "")
+
+
+def is_valid_image_input(input):
+    format = input.upper().split(".")
+    if format[-1] not in ["PNG", "JPG", "JPEG"]:
+        return False
+    return True

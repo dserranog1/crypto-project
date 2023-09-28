@@ -19,6 +19,19 @@ def create_hill_tab():
             [create_title("Texto encriptado")],
             [center_column(create_encrypted_text_box(HILL, has_analyze=False))],
             create_key_layout(HILL),
-            [center_column([create_encrypt_decrypt_buttons(HILL)])],
+            [
+                center_column(
+                    [
+                        create_encrypt_decrypt_buttons(HILL),
+                        [
+                            sg.Button(
+                                "Encriptar imagen",
+                                key="HILL_IMAGE_ENCRYPT",
+                            ),
+                            sg.Button("Desencriptar imagen", key="HILL_IMAGE_DECRYPT"),
+                        ],
+                    ]
+                )
+            ],
         ],
     )

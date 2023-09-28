@@ -11,18 +11,25 @@ from permutation.cipher import cifrado_permutacion, descifrado_permutacion
 from permutation.keygen import generate_key as generate_permutation_key
 from vigenere.cipher import cifrado_vigenere, descifrado_vigenere
 from vigenere.keygen import generar_clave as generar_clave_vigenere
-from utils.helpers import format_attack, format_input
+from utils.helpers import format_attack, format_input, is_valid_image_input
+from utils.text_to_image import image_to_list, list_to_image
 from globals import *
 from hill.cipher import (
     encryption_algorithm as hill_encrypt,
     decryption_algorithm as hill_decrypt,
+    encrypt_image,
+    decrypt_image,
 )
 from hill.keygen import generate_key as hill_keygen
 
 
 def make_selection_window():
     layout = [
-        [sg.Text("Bienvenido, por favor selecione una categoría para comenzar")],
+        [
+            sg.Text(
+                "Bienvenido a EnigmaVault, por favor selecione una categoría para comenzar"
+            )
+        ],
         [
             center_column(
                 [
@@ -143,7 +150,6 @@ def init_main_window():
                 window[algorithm + KEY_INPUT].update(key)
             elif action in KEY_GEN:
                 generated_key = algorithms_manager[algorithm][KEY_GEN]()
-                print(generated_key)
                 window[algorithm + KEY_INPUT].update(generated_key)
             elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
                 action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
@@ -160,3 +166,53 @@ def init_main_window():
                     title="Resultados del análisis",
                     size=(50, 10),
                 )
+        elif algorithm_and_action[0] == "HILL_IMAGE_ENCRYPT":
+            file = sg.popup_get_file(
+                "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+                "Seleccione una imagen",
+            )
+            if not file:
+                continue
+            while not is_valid_image_input(file):
+                sg.popup_error("Formato invalido", title="Ok")
+                file = sg.popup_get_file(
+                    "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+                    "Seleccione una imagen",
+                )
+                if not file:
+                    break
+            image, original_shape = image_to_list(file)
+            input_key = values[HILL_KEY_INPUT]
+            if not input_key:
+                input_key = hill_keygen(is_image=True)
+            original_length = len(image)
+            encrypted_image, key = encrypt_image(input_key, image)
+            # Aditional items might've been added to complete the encryption, so we go back to the original size
+            encrypted_image = encrypted_image[:original_length]
+            list_to_image(encrypted_image, original_shape, "encrypted_image")
+
+            window[HILL_KEY_INPUT].update(key)
+        elif algorithm_and_action[0] == "HILL_IMAGE_DECRYPT":
+            file = sg.popup_get_file(
+                "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+                "Seleccione una imagen",
+            )
+            if not file:
+                continue
+            while not is_valid_image_input(file):
+                sg.popup_error("Formato invalido", title="Ok")
+                file = sg.popup_get_file(
+                    "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+                    "Seleccione una imagen",
+                )
+                if not file:
+                    break
+            image, original_shape = image_to_list(file)
+            input_key = values[HILL_KEY_INPUT]
+            if not input_key:
+                input_key = hill_keygen(is_image=True)
+            decrypted_image, key = decrypt_image(input_key, image)
+            # Aditional items might've been added to complete the encryption, so we go back to the original size
+            decrypted_image = decrypted_image[:original_length]
+            list_to_image(decrypted_image, original_shape, "decrypted_image")
+            window[HILL_KEY_INPUT].update(key)

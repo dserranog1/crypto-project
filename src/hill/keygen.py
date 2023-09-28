@@ -12,26 +12,34 @@ def key2string(key):
     return string_key.replace(" ;", ";")[:-1]
 
 
-def validate_key(key_matrix):
+def validate_key(key_matrix, is_image=False):
+    if is_image:
+        module = 256
+    else:
+        module = 26
     # Check if the key matrix is square
     if key_matrix.shape[0] != key_matrix.shape[1]:
         raise ValueError("Key matrix must be square")
 
     # Check if the key matrix is invertible
     determinant = int(np.linalg.det(key_matrix))
-    if math.gcd(determinant, 26) != 1:
+    if math.gcd(determinant, module) != 1:
         raise ValueError("Key matrix is not invertible")
 
     if not np.linalg.det(key_matrix).is_integer():
         raise ValueError("Key determinant is not integer")
 
 
-def generate_key(key_size=3):
+def generate_key(key_size=3, is_image=False):
+    if is_image:
+        module = 256
+    else:
+        module = 26
     # Generate a random invertible key matrix for Hill cipher
     while True:
-        key_matrix = np.random.randint(0, 10, (key_size, key_size)) % 26
+        key_matrix = np.random.randint(0, 10, (key_size, key_size)) % module
         try:
-            validate_key(key_matrix)
+            validate_key(key_matrix, is_image)
             return key2string(key_matrix)
         except ValueError:
             continue
