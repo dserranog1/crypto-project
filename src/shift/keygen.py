@@ -4,4 +4,4 @@ import random
 
 
 def generate_key():
-    return random.randint(1, 100)
+    return random.randint(1, 26)
