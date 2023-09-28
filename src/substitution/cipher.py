@@ -45,6 +45,7 @@ def clave_valida(texto):
 
 def sustitucion_cripter(claves,palabra):
   palabra = eliminar_espacios(palabra)
+  palabra = palabra.upper()
   if len(claves) == 0:
     claves = generate_key()
   elif not clave_valida(claves):
@@ -67,6 +68,7 @@ def sustitucion_cripter(claves,palabra):
 
 def sustitucion_desencriptar(claves,palabra):
   palabra = eliminar_espacios(palabra)
+  palabra = palabra.upper()
   if len(claves) == 0:
     claves = generate_key()
   elif not clave_valida(claves):

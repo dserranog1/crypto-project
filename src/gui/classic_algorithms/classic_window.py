@@ -4,9 +4,10 @@ from gui.classic_algorithms.tabs.permutation_tab import create_permutation_tab
 from gui.classic_algorithms.tabs.vigenere_tab import create_vigenere_tab
 from gui.classic_algorithms.tabs.hill_tab import create_hill_tab
 from gui.classic_algorithms.tabs.substitution_tab import create_substitution_tab
+from gui.classic_algorithms.tabs.affine_tab import create_affine_tab
 
 def create_classics_window():
-    afin_tab = sg.Tab("Algoritmo afín", [[sg.Text("Afín logic goes here")]])
+    afin_tab = create_affine_tab()
     desplazamiento_tab = create_shift_tab()
     permutacion_tab = create_permutation_tab()
     vigenere_tab = create_vigenere_tab()
