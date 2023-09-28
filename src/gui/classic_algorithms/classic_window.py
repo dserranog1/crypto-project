@@ -3,15 +3,14 @@ from gui.classic_algorithms.tabs.shift_tab import create_shift_tab
 from gui.classic_algorithms.tabs.permutation_tab import create_permutation_tab
 from gui.classic_algorithms.tabs.vigenere_tab import create_vigenere_tab
 from gui.classic_algorithms.tabs.hill_tab import create_hill_tab
+from gui.classic_algorithms.tabs.substitution_tab import create_substitution_tab
 
 def create_classics_window():
     afin_tab = sg.Tab("Algoritmo afín", [[sg.Text("Afín logic goes here")]])
     desplazamiento_tab = create_shift_tab()
     permutacion_tab = create_permutation_tab()
     vigenere_tab = create_vigenere_tab()
-    sustitucion_tab = sg.Tab(
-        "Algoritmo sustitucion", [[sg.Text("Sustitucion logic goes here")]]
-    )
+    sustitucion_tab = create_substitution_tab()
     hill_tab = create_hill_tab()
     Tg = sg.TabGroup(
         [

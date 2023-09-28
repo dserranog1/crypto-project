@@ -11,6 +11,8 @@ from permutation.cipher import cifrado_permutacion, descifrado_permutacion
 from permutation.keygen import generate_key as generate_permutation_key
 from vigenere.cipher import cifrado_vigenere, descifrado_vigenere
 from vigenere.keygen import generar_clave as generar_clave_vigenere
+from substitution.cipher import sustitucion_cripter, sustitucion_desencriptar
+from substitution.keygen import generate_key as generate_substitution_key
 from utils.helpers import format_attack, format_input, is_valid_image_input
 from utils.text_to_image import image_to_list, list_to_image
 from globals import *
@@ -101,7 +103,17 @@ def init_main_window():
             DECRYPT: descifrado_vigenere,
             KEY_GEN: generar_clave_vigenere,
         },
-        HILL: {ENCRYPT: hill_encrypt, DECRYPT: hill_decrypt, KEY_GEN: hill_keygen},
+        HILL: {
+            ENCRYPT: hill_encrypt, 
+            DECRYPT: hill_decrypt, 
+            KEY_GEN: hill_keygen,
+        },
+        SUBSTITUTION: {
+            ENCRYPT: sustitucion_cripter,
+            DECRYPT: sustitucion_desencriptar,
+            KEY_GEN: generate_substitution_key,
+        }
+
     }
     """
     The analyze function must have the following structure

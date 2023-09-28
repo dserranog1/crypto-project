@@ -1,7 +1,7 @@
 # Module for cipher and decipher logic
 import re
 from substitution.analysis import *
-from substitution.keygen import *
+from substitution.keygen import generate_key
 
 def eliminar_especiales_y_numeros(frase):
     # Utilizamos una expresión regular para encontrar todos los caracteres que no son letras
@@ -20,7 +20,7 @@ def alfabeto_original():
         dic[letras[k]] = k
     return dic
 
-def clave(input):
+def dic_clave(input):
   input = eliminar_espacios(input)
   input = eliminar_especiales_y_numeros(input)
   dic ={}
@@ -43,10 +43,14 @@ def clave_valida(texto):
     # Comprueba si el conjunto de letras en el texto es igual al conjunto de todas las letras del alfabeto
     return letras_en_texto == letras_del_alfabeto and len(texto) == 26
 
-def encriptar(palabra,claves):
+def sustitucion_cripter(claves,palabra):
   palabra = eliminar_espacios(palabra)
+  if len(claves) == 0:
+    claves = generate_key()
+  elif not clave_valida(claves):
+     claves = generate_key()
   valores = []
-  diccionario = clave(claves)
+  diccionario = dic_clave(claves)
   claves_encontradas = []
   a = alfabeto_original()
   for letra in palabra:
@@ -59,11 +63,15 @@ def encriptar(palabra,claves):
         if valor == i:
             claves_encontradas.append(clave)
   palabra_encriptada = "".join(claves_encontradas)
-  return palabra_encriptada
+  return palabra_encriptada,claves
 
-def desencriptar(palabra,claves):
+def sustitucion_desencriptar(claves,palabra):
   palabra = eliminar_espacios(palabra)
-  diccionario = clave(claves)
+  if len(claves) == 0:
+    claves = generate_key()
+  elif not clave_valida(claves):
+    claves = generate_key()
+  diccionario = dic_clave(claves)
   valores = []
   claves_encontradas = []
   a = alfabeto_original()
@@ -77,4 +85,4 @@ def desencriptar(palabra,claves):
         if valor == i:
             claves_encontradas.append(clave)
   palabra_desencriptada = "".join(claves_encontradas)
-  return palabra_desencriptada
+  return palabra_desencriptada,claves
