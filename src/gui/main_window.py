@@ -32,7 +32,7 @@ def make_selection_window():
         [
             sg.Text(
                 "Bienvenido a EnigmaVault, por favor selecione una categoría para comenzar"
-            )
+            ),
         ],
         [
             center_column(
@@ -106,8 +106,8 @@ def init_main_window():
             KEY_GEN: generar_clave_vigenere,
         },
         HILL: {
-            ENCRYPT: hill_encrypt, 
-            DECRYPT: hill_decrypt, 
+            ENCRYPT: hill_encrypt,
+            DECRYPT: hill_decrypt,
             KEY_GEN: hill_keygen,
         },
         SUBSTITUTION: {
@@ -119,7 +119,7 @@ def init_main_window():
             ENCRYPT: cifrado_afin,
             DECRYPT: descifrado_afin,
             KEY_GEN: generate_affine_key,
-        }
+        },
     }
     """
     The analyze function must have the following structure
@@ -178,9 +178,9 @@ def init_main_window():
                 output = algorithms_manager[algorithm][ANALYZE](
                     values[algorithm + ENCRYPTED_TEXT_INPUT_BOX]
                 )
-                formatted_output = format_attack(output)
+                # formatted_output = format_attack(output)
                 sg.popup_scrolled(
-                    formatted_output,
+                    output,
                     title="Resultados del análisis",
                     size=(50, 10),
                 )
@@ -192,13 +192,14 @@ def init_main_window():
             if not file:
                 continue
             while not is_valid_image_input(file):
-                sg.popup_error("Formato invalido", title="Ok")
+                sg.popup_error("Formato invalido")
                 file = sg.popup_get_file(
                     "Seleccion la imagen por favor (PNG, JPG, JPEG)",
                     "Seleccione una imagen",
                 )
                 if not file:
                     break
+            # begin encryption
             image, original_shape = image_to_list(file)
             input_key = values[HILL_KEY_INPUT]
             if not input_key:
@@ -208,7 +209,7 @@ def init_main_window():
             # Aditional items might've been added to complete the encryption, so we go back to the original size
             encrypted_image = encrypted_image[:original_length]
             list_to_image(encrypted_image, original_shape, "encrypted_image")
-
+            # end encryption
             window[HILL_KEY_INPUT].update(key)
         elif algorithm_and_action[0] == "HILL_IMAGE_DECRYPT":
             file = sg.popup_get_file(
@@ -225,6 +226,7 @@ def init_main_window():
                 )
                 if not file:
                     break
+            # begin decryption
             image, original_shape = image_to_list(file)
             input_key = values[HILL_KEY_INPUT]
             if not input_key:
@@ -233,4 +235,5 @@ def init_main_window():
             # Aditional items might've been added to complete the encryption, so we go back to the original size
             decrypted_image = decrypted_image[:original_length]
             list_to_image(decrypted_image, original_shape, "decrypted_image")
+            # end decryption
             window[HILL_KEY_INPUT].update(key)
