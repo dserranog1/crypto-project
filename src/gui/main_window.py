@@ -1,30 +1,30 @@
 import PySimpleGUI as sg
 from gui.classic_algorithms.classic_window import create_classics_window
 from gui.common.custom_elements import center_column
-from shift.cipher import (
+from classic.shift.cipher import (
     cifrado_desplazamiento,
     descifrado_desplazamiento,
     attack as analyze_shift,
 )
-from shift.keygen import generate_key as generate_shift_key
-from permutation.cipher import cifrado_permutacion, descifrado_permutacion
-from permutation.keygen import generate_key as generate_permutation_key
-from vigenere.cipher import cifrado_vigenere, descifrado_vigenere
-from vigenere.keygen import generar_clave as generar_clave_vigenere
-from substitution.cipher import sustitucion_cripter, sustitucion_desencriptar
-from substitution.keygen import generate_key as generate_substitution_key
-from affine.cipher import cifrado_afin, descifrado_afin
-from affine.keygen import generate_key as generate_affine_key
+from classic.shift.keygen import generate_key as generate_shift_key
+from classic.permutation.cipher import cifrado_permutacion, descifrado_permutacion
+from classic.permutation.keygen import generate_key as generate_permutation_key
+from classic.vigenere.cipher import cifrado_vigenere, descifrado_vigenere
+from classic.vigenere.keygen import generar_clave as generar_clave_vigenere
+from classic.substitution.cipher import sustitucion_cripter, sustitucion_desencriptar
+from classic.substitution.keygen import generate_key as generate_substitution_key
+from classic.affine.cipher import cifrado_afin, descifrado_afin
+from classic.affine.keygen import generate_key as generate_affine_key
 from utils.helpers import format_attack, format_input, is_valid_image_input
 from utils.text_to_image import image_to_list, list_to_image
 from globals import *
-from hill.cipher import (
+from classic.hill.cipher import (
     encryption_algorithm as hill_encrypt,
     decryption_algorithm as hill_decrypt,
     encrypt_image,
     decrypt_image,
 )
-from hill.keygen import generate_key as hill_keygen
+from classic.hill.keygen import generate_key as hill_keygen
 
 
 def make_selection_window():

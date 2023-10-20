@@ -1,5 +1,5 @@
-from permutation.analysis import *
-from permutation.keygen import *
+from .analysis import *
+from .keygen import *
 
 
 def validar_numeros_de_clave(clave):

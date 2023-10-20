@@ -1,5 +1,5 @@
 # Module for cipher and decipher logic
-from hill.keygen import generate_key, validate_key, key2string
+from .keygen import generate_key, validate_key, key2string
 import numpy as np
 
 

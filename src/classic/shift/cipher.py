@@ -1,6 +1,6 @@
 ## Module for cipher and decipher logic
-from shift.analysis import *
-from shift.keygen import *
+from .analysis import *
+from .keygen import *
 
 
 def revisar_clave(clave):
