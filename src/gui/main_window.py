@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 from gui.classic_algorithms.classic_window import create_classics_window
+from gui.block_algorithms.block_window import create_block_window
 from gui.common.custom_elements import center_column
 from classic.shift.cipher import (
     cifrado_desplazamiento,
@@ -38,7 +39,7 @@ def make_selection_window():
             center_column(
                 [
                     [sg.Button("Algoritmos clásicos", key=CLASSICS)],
-                    [sg.Button("Algoritmos otro", key=OTRO)],
+                    [sg.Button("Algoritmos bloque", key=BLOCK)],
                 ]
             )
         ],
@@ -47,16 +48,6 @@ def make_selection_window():
     return sg.Window(
         "Criptonita", layout, location=(0, 0), finalize=True, disable_close=True
     )
-
-
-def make_win2():
-    layout = [
-        [sg.Text("The second window")],
-        [sg.Input(key="-IN-", enable_events=True)],
-        [sg.Text(size=(25, 1), k="-OUTPUT-")],
-        [sg.Button("Erase"), sg.Button("Popup"), sg.Button("Salir")],
-    ]
-    return sg.Window("Second Window", layout, finalize=True, disable_close=True)
 
 
 def close_window(window_manager, window):
@@ -71,7 +62,7 @@ def init_main_window():
     sg.theme("DarkGrey13")
     window_manager = {
         CLASSICS: {"create_fn": create_classics_window, "window": None},
-        OTRO: {"create_fn": make_win2, "window": None},
+        BLOCK: {"create_fn": create_block_window, "window": None},
     }
     """
     Encryption and decryption algorithms must have the following structure
