@@ -7,6 +7,7 @@ from gui.common.custom_elements import (
     create_encrypted_text_box,
     create_key_layout,
     create_encrypt_decrypt_buttons,
+    create_select_mode,
 )
 
 
@@ -20,5 +21,6 @@ def create_aes_tab():
             [center_column(create_encrypted_text_box(AES, has_analyze=False))],
             create_key_layout(AES),
             [center_column([create_encrypt_decrypt_buttons(AES)])],
+            [center_column([create_select_mode(AES)])],
         ],
     )

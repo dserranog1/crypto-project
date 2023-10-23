@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 from .tabs.aes_tab import create_aes_tab
 from .tabs.des_tab import create_des_tab
 from .tabs.tdes_tab import create_tdes_tab
+from globals import *
 
 
 def create_block_window():
@@ -18,6 +19,4 @@ def create_block_window():
         ]
     )
     layout = [[Tg], [sg.Button("Salir")]]
-    return sg.Window(
-        "Criptonita", layout, location=(0, 0), finalize=True, disable_close=True
-    )
+    return sg.Window(BLOCK, layout, location=(0, 0), finalize=True, disable_close=True)

@@ -13,7 +13,7 @@ GENERATE = "-GENERATE"
 ANALYZE = "-ANALYZE"
 KEY_GEN = "-KEY-GEN"
 DELETE = "-DELETE"
-
+MODE = "-MODE"
 
 # Shift algorithm globals
 SHIFT = "SHIFT"
