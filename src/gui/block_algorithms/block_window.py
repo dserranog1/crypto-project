@@ -19,6 +19,9 @@ from block.tdes.cipher import t_des_encrypt, t_des_decrypt
 from block.tdes.keygen import generate_key as tdes_keygen
 from globals import *
 
+# modes
+from block.modes import cbc, cfb, ctr, ecb
+
 block_algorithms_manager = {
     AES: {
         ENCRYPT: aes_encrypt,
