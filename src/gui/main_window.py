@@ -4,7 +4,10 @@ from gui.classic_algorithms.classic_window import (
     handle_classics_window_event,
 )
 from globals import *
-from gui.block_algorithms.block_window import create_block_window
+from gui.block_algorithms.block_window import (
+    create_block_window,
+    handle_block_window_event,
+)
 from gui.common.custom_elements import center_column
 
 
@@ -57,3 +60,5 @@ def init_main_window():
             window_manager[event]["window"] = window_manager[event]["create_fn"]()
         elif window.Title == CLASSICS:
             handle_classics_window_event(window, event, values)
+        elif window.Title == BLOCK:
+            handle_block_window_event(window, event, values)

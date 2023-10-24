@@ -1,25 +1,41 @@
 import PySimpleGUI as sg
-from gui.classic_algorithms.tabs.shift_tab import create_shift_tab
-from gui.classic_algorithms.tabs.permutation_tab import create_permutation_tab
-from gui.classic_algorithms.tabs.vigenere_tab import create_vigenere_tab
-from gui.classic_algorithms.tabs.hill_tab import create_hill_tab
-from gui.classic_algorithms.tabs.substitution_tab import create_substitution_tab
-from gui.classic_algorithms.tabs.affine_tab import create_affine_tab
 from globals import *
+from utils.helpers import format_input, is_valid_image_input
+from utils.text_to_image import image_to_list, list_to_image
+
+# tabs imports
+from .tabs.shift_tab import create_shift_tab
+from .tabs.permutation_tab import create_permutation_tab
+from .tabs.vigenere_tab import create_vigenere_tab
+from .tabs.hill_tab import create_hill_tab
+from .tabs.substitution_tab import create_substitution_tab
+from .tabs.affine_tab import create_affine_tab
+
+# shift imports
 from classic.shift.keygen import generate_key as generate_shift_key
-from classic.permutation.cipher import cifrado_permutacion, descifrado_permutacion
-from classic.permutation.keygen import generate_key as generate_permutation_key
-from classic.vigenere.cipher import cifrado_vigenere, descifrado_vigenere
-from classic.vigenere.keygen import generar_clave as generar_clave_vigenere
-from classic.substitution.cipher import sustitucion_cripter, sustitucion_desencriptar
-from classic.substitution.keygen import generate_key as generate_substitution_key
-from classic.affine.cipher import cifrado_afin, descifrado_afin
-from classic.affine.keygen import generate_key as generate_affine_key
 from classic.shift.cipher import (
     cifrado_desplazamiento,
     descifrado_desplazamiento,
     attack as analyze_shift,
 )
+
+# permutation imports
+from classic.permutation.cipher import cifrado_permutacion, descifrado_permutacion
+from classic.permutation.keygen import generate_key as generate_permutation_key
+
+# vigenere imports
+from classic.vigenere.cipher import cifrado_vigenere, descifrado_vigenere
+from classic.vigenere.keygen import generar_clave as generar_clave_vigenere
+
+# substitution imports
+from classic.substitution.cipher import sustitucion_cripter, sustitucion_desencriptar
+from classic.substitution.keygen import generate_key as generate_substitution_key
+
+# affine imports
+from classic.affine.cipher import cifrado_afin, descifrado_afin
+from classic.affine.keygen import generate_key as generate_affine_key
+
+# hill imports
 from classic.hill.cipher import (
     encryption_algorithm as hill_encrypt,
     decryption_algorithm as hill_decrypt,
@@ -27,8 +43,6 @@ from classic.hill.cipher import (
     decrypt_image,
 )
 from classic.hill.keygen import generate_key as hill_keygen
-from utils.helpers import format_input, is_valid_image_input
-from utils.text_to_image import image_to_list, list_to_image
 
 """
     Encryption and decryption algorithms must have the following structure

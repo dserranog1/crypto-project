@@ -2,4 +2,4 @@
 
 
 def generate_key():
-    return ""
+    return "tdes keygen!"
