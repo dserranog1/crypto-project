@@ -218,6 +218,7 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
         input_key = values[HILL_KEY_INPUT]
         if not input_key:
             input_key = hill_keygen(is_image=True)
+        original_length = len(image)
         decrypted_image, key = decrypt_image(input_key, image)
         # Aditional items might've been added to complete the encryption, so we go back to the original size
         decrypted_image = decrypted_image[:original_length]
