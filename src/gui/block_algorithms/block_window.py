@@ -20,7 +20,10 @@ from block.tdes.keygen import generate_key as tdes_keygen
 from globals import *
 
 # modes
-from block.modes import cbc, cfb, ctr, ecb
+from block.modes.cbc import cbc
+from block.modes.cfb import cfb
+from block.modes.ctr import ctr
+from block.modes.ecb import ecb
 
 block_algorithms_manager = {
     AES: {
@@ -38,6 +41,10 @@ block_algorithms_manager = {
         DECRYPT: t_des_decrypt,
         KEY_GEN: tdes_keygen,
     },
+    CBC: cbc,
+    CFB: cfb,
+    CTR: ctr,
+    ECB: ecb,
 }
 
 
@@ -59,37 +66,36 @@ def create_block_window():
 
 
 def handle_block_window_event(window: sg.Window | None, event, values):
-    # print(event)
-    # print(values)
     algorithm_and_action = event.split("-", 1)
-    algorithm, action = algorithm_and_action[0], algorithm_and_action[1]
+    algorithm_name, action = algorithm_and_action[0], algorithm_and_action[1]
     if algorithm_and_action[0] in block_algorithms_manager:
-        print(algorithm_and_action)
         if action in ENCRYPT:
-            encrypted_text, key = block_algorithms_manager[algorithm][ENCRYPT](
-                format_input(values[algorithm + KEY_INPUT]),
-                values[algorithm + CLEAR_TEXT_INPUT_BOX],
-            )
-            window[algorithm + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
-            window[algorithm + KEY_INPUT].update(key)
+            mode = block_algorithms_manager[values[algorithm_name + MODE]]
+            algorithm_fn = block_algorithms_manager[algorithm_name][ENCRYPT]
+            key = format_input(values[algorithm_name + KEY_INPUT])
+            input = values[algorithm_name + CLEAR_TEXT_INPUT_BOX]
+            encrypted_text, key = mode(input, key, algorithm_fn)
+            window[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
+            window[algorithm_name + KEY_INPUT].update(key)
         elif action in DECRYPT:
-            clear_text, key = block_algorithms_manager[algorithm][DECRYPT](
-                format_input(values[algorithm + KEY_INPUT]),
-                values[algorithm + ENCRYPTED_TEXT_INPUT_BOX],
-            )
-            window[algorithm + CLEAR_TEXT_INPUT_BOX].update(clear_text)
-            window[algorithm + KEY_INPUT].update(key)
+            mode = block_algorithms_manager[values[algorithm_name + MODE]]
+            algorithm_fn = block_algorithms_manager[algorithm_name][DECRYPT]
+            key = format_input(values[algorithm_name + KEY_INPUT])
+            input = values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
+            clear_text, key = mode(input, key, algorithm_fn)
+            window[algorithm_name + CLEAR_TEXT_INPUT_BOX].update(clear_text)
+            window[algorithm_name + KEY_INPUT].update(key)
         elif action in KEY_GEN:
-            generated_key = block_algorithms_manager[algorithm][KEY_GEN]()
-            window[algorithm + KEY_INPUT].update(generated_key)
+            generated_key = block_algorithms_manager[algorithm_name][KEY_GEN]()
+            window[algorithm_name + KEY_INPUT].update(generated_key)
         elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
             action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
         ):
             input_box = action.split("-", 1)[1]
-            window[algorithm + "-" + input_box].update("")
+            window[algorithm_name + "-" + input_box].update("")
         elif action in ANALYZE:
-            output = block_algorithms_manager[algorithm][ANALYZE](
-                values[algorithm + ENCRYPTED_TEXT_INPUT_BOX]
+            output = block_algorithms_manager[algorithm_name][ANALYZE](
+                values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
             )
             # formatted_output = format_attack(output)
             sg.popup_scrolled(

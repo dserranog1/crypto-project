@@ -15,6 +15,12 @@ KEY_GEN = "-KEY-GEN"
 DELETE = "-DELETE"
 MODE = "-MODE"
 
+# Block encryption modes
+CBC = "CBC"
+CFB = "CFB"
+CTR = "CTR"
+ECB = "ECB"
+
 # Shift algorithm globals
 SHIFT = "SHIFT"
 SHIFT_ENCRYPT = SHIFT + ENCRYPT

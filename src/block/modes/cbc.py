@@ -4,7 +4,13 @@ def cbc(plain_text, key, algorithm):
     # cipher_block, key = algorithm(block_of_plain_text)
     cipher_text = ""
     for i in range(20):
-        cipher_text, key = (
-            algorithm(plain_text) + "iteration number" + i + "with algorithm" + "cbc"
+        cipher_block, key = algorithm(plain_text, key)
+        cipher_text = cipher_text + (
+            cipher_block
+            + " iteration number "
+            + str(i)
+            + " with algorithm "
+            + "cbc"
+            + "\n"
         )
     return cipher_text, key

@@ -51,7 +51,6 @@ def init_main_window():
     make_selection_window()
     while True:  # Event Loop
         window, event, values = sg.read_all_windows()
-        print(window.Title)
         if event == sg.WIN_CLOSED or event == "Salir":
             window.close()
             if not close_window(window_manager, window):
