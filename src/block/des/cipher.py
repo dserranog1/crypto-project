@@ -8,11 +8,12 @@ def invalid_key(key):
     return True
   return False
 
-def des_encrypt(block_of_plain_text, key):
-  # implement des algorithm here
+def des_encrypt(pt, key):
   if not key or invalid_key(key):
-      key = generar_key(len(pt))
     
+      key = generar_key(len(pt))
+  #Key's copy
+  key1 = key
   #Hex to binary
   key = hex2bin(key)
   
@@ -84,6 +85,7 @@ def des_encrypt(block_of_plain_text, key):
 
     #S-boxex: substituting the value from s-box table by calculating row and column
     sbox_str = ""
+    
     for j in range(0, 8):
       row = bin2dec(int(xor_x[j * 6] + xor_x[j * 6 + 5]))
       col = bin2dec(
@@ -104,13 +106,13 @@ def des_encrypt(block_of_plain_text, key):
     print("Round ", i + 1, " ", bin2hex(left),
       " ", bin2hex(right), " ", rk[i])
   
-  	#Combination
-  	combine = left + right
-  
-  	#Final permutation: final rearranging of bits to get cipher text
-  	cipher_text = permute(combine, final_perm, 64)
+  #Combination
+  combine = left + right
 
-  	return cipher_text, key
+  #Final permutation: final rearranging of bits to get cipher text
+  cipher_text = permute(combine, final_perm, 64)
+
+  return cipher_text, key1
 
 
 def des_decrypt(block_of_cipher_text, key):
