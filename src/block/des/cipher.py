@@ -4,9 +4,10 @@ from .keygen import generate_key
 
 
 def invalid_key(key):
-    # implement key validation logic
-    return True  # or False
-
+    if len(key) == len(pt):
+        return True
+    else:
+        return False 
 
 def des_encrypt(block_of_plain_text, key):
     # implement des algorithm here
