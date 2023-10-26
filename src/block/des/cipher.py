@@ -5,15 +5,13 @@ from .keygen import generate_key
 
 def invalid_key(key):
   if len(key) == len(pt):
-    return key
-  else:
-    return generar_key(len(pt))
+    return True
+  return False
 
 def des_encrypt(block_of_plain_text, key):
     # implement des algorithm here
     if not key or invalid_key(key):
-        # key gen and validation
-        key = generate_key()
+        key = generar_key(len(pt))
 
     cipher_text_block = "des encrypt!"
     return cipher_text_block, key
