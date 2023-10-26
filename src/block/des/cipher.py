@@ -4,7 +4,7 @@ from .keygen import generate_key
 
 
 def invalid_key(key):
-  if len(key) =! len(pt):
+  if len(key) != len(pt):
     return True
   return False
 
