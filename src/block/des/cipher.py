@@ -73,16 +73,16 @@ def des_encrypt(pt, key, is_encrypting=True):
     combine = left + right
 
     # Final permutation: final rearranging of bits to get cipher text
-    cipher_text = permute(combine, final_perm, 64)
+    cipher_text = bin2hex(permute(combine, final_perm, 64))
     
     return cipher_text, key1
 
 
 def des_decrypt(block_of_cipher_text, key):
     # implement des algorithm here
-    if not key or invalid_key(key):
+    
+    if not key or invalid_key(key, pt):
         # key gen and validation
-        key = generate_key()
-
-    plain_text_block = "des decrypt!"
-    return plain_text_block, key
+        key = generate_key(len(pt))
+        
+    return des_encrypt(block_of_cipher_text, key, False)
