@@ -1,7 +1,7 @@
 ## Module for cipher and decipher logic
 from .analysis import *
 from .keygen import generate_key
-from utils.common import is_binary
+from block.utils.common import is_binary
 
 
 def invalid_key(key):
