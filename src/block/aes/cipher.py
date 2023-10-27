@@ -3,38 +3,34 @@ from .analysis import *
 from .keygen import generate_key
 
 
-
-
-
 def invalid_key(key):
     # implement key validation logic
 
-    #if not clave:
+    # if not clave:
     #   clave = generate_key()
-    #elif not clave.isdigit():
+    # elif not clave.isdigit():
     #    clave = generate_key()
-    #else:
+    # else:
     #    clave = int(clave)
-    #return clave
+    # return clave
     return True  # or False
 
 
-#def aes_encrypt(block_of_plain_text, key):
-    # implement aes algorithm here
-    #if not key or invalid_key(key):
-    #    # key gen and validation
-    #    key = generate_key()
-    
-    #
-    #cipher_text_block = "aes encrypt!"
-    #return cipher_text_block, key
+# def aes_encrypt(block_of_plain_text, key):
+# implement aes algorithm here
+# if not key or invalid_key(key):
+#    # key gen and validation
+#    key = generate_key()
+
+#
+# cipher_text_block = "aes encrypt!"
+# return cipher_text_block, key
 
 
+## data is block_of_plain_text
 
-## data is block_of_plain_text     
 
-def ae(data: bytes, key: bytes) -> bytes:
-
+def aes_encrypt(data: bytes, key: bytes) -> bytes:
     key_bit_length = len(key) * 8
 
     if key_bit_length == 128:
@@ -64,9 +60,7 @@ def ae(data: bytes, key: bytes) -> bytes:
     return cipher, key
 
 
-
-
-#def aes_decrypt(block_of_cipher_text, key):
+# def aes_decrypt(block_of_cipher_text, key):
 #    # implement aes algorithm here
 #    if not key or invalid_key(key):
 #        # key gen and validation
@@ -76,8 +70,8 @@ def ae(data: bytes, key: bytes) -> bytes:
 #    return plain_text_block, key
 #
 
-def aes_decryption(cipher: bytes, key: bytes) -> bytes:
 
+def aes_decrypt(cipher: bytes, key: bytes) -> bytes:
     key_byte_length = len(key)
     key_bit_length = key_byte_length * 8
     nk = key_byte_length // 4
@@ -93,7 +87,7 @@ def aes_decryption(cipher: bytes, key: bytes) -> bytes:
     key_schedule = key_expansion(key)
     add_round_key(state, key_schedule, round=nr)
 
-    for round in range(nr-1, 0, -1):
+    for round in range(nr - 1, 0, -1):
         inv_shift_rows(state)
         inv_sub_bytes(state)
         add_round_key(state, key_schedule, round)
