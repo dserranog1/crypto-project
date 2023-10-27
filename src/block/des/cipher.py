@@ -3,171 +3,37 @@ from .analysis import *
 from .keygen import generate_key
 
 
-def invalid_key(key, pt):
-    if len(key) != len(pt):
+def invalid_key(block_of_plain_text, key):
+    if len(key) != len(block_of_plain_text):
         return True
     return False
 
 
-def des_encrypt(pt, key, is_encrypting=True):
-    if not is_encrypting:
-        rkb = rkb[::-1]
-        rk = rk[::-1]
-    if not key or invalid_key(key, pt):
-        key = generate_key(len(pt))
+def des_encrypt(block_of_plain_text, key, is_encrypting=True):
+
+    if not key or invalid_key(block_of_plain_text, key):
+        key = generate_key(len(block_of_plain_text))
+        
     # Key's copy
     key1 = key
     # Hex to binary
     key = hex2bin(key)
 
-    # Parity bit drop table
-    keyp = [
-        57,
-        49,
-        41,
-        33,
-        25,
-        17,
-        9,
-        1,
-        58,
-        50,
-        42,
-        34,
-        26,
-        18,
-        10,
-        2,
-        59,
-        51,
-        43,
-        35,
-        27,
-        19,
-        11,
-        3,
-        60,
-        52,
-        44,
-        36,
-        63,
-        55,
-        47,
-        39,
-        31,
-        23,
-        15,
-        7,
-        62,
-        54,
-        46,
-        38,
-        30,
-        22,
-        14,
-        6,
-        61,
-        53,
-        45,
-        37,
-        29,
-        21,
-        13,
-        5,
-        28,
-        20,
-        12,
-        4,
-    ]
+    rkb, rk = round_keys(key)
+    
+    if not is_encrypting:
+        rkb = rkb[::-1]
+        rk = rk[::-1]
 
-    # Getting 56 bit key from 64 bit using the parity bits
-    key = permute(key, keyp, 56)
-
-    # Number of bit shifts
-    shift_table = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
-
-    # Key- Compression Table : Compression of key from 56 bits to 48 bits
-    key_comp = [
-        14,
-        17,
-        11,
-        24,
-        1,
-        5,
-        3,
-        28,
-        15,
-        6,
-        21,
-        10,
-        23,
-        19,
-        12,
-        4,
-        26,
-        8,
-        16,
-        7,
-        27,
-        20,
-        13,
-        2,
-        41,
-        52,
-        31,
-        37,
-        47,
-        55,
-        30,
-        40,
-        51,
-        45,
-        33,
-        48,
-        44,
-        49,
-        39,
-        56,
-        34,
-        53,
-        46,
-        42,
-        50,
-        36,
-        29,
-        32,
-    ]
-
-    # Splitting
-    left = key[0:28]  # rkb for RoundKeys in binary
-    right = key[28:56]  # rk for RoundKeys in hexadecimal
-
-    rkb = []
-    rk = []
-
-    for i in range(0, 16):
-        # Shifting the bits by nth shifts by checking from shift table
-        left = shift_left(left, shift_table[i])
-        right = shift_left(right, shift_table[i])
-
-        # Combination of left and right string
-        combine_str = left + right
-
-        # Compression of key from 56 to 48 bits
-        round_key = permute(combine_str, key_comp, 48)
-
-        rkb.append(round_key)
-        rk.append(bin2hex(round_key))
-
-    pt = hex2bin(pt)
+    block_of_plain_text = hex2bin(block_of_plain_text)
 
     # Initial Permutation
-    pt = permute(pt, initial_perm, 64)
-    print("After initial permutation", bin2hex(pt))
+    block_of_plain_text = permute(block_of_plain_text, initial_perm, 64)
+    print("After initial permutation", bin2hex(block_of_plain_text))
 
     # Splitting
-    left = pt[0:32]
-    right = pt[32:64]
+    left = block_of_plain_text[0:32]
+    right = block_of_plain_text[32:64]
     for i in range(0, 16):
         # Expansion D-box: Expanding the 32 bits data into 48 bits
         right_expanded = permute(right, exp_d, 48)
@@ -207,15 +73,16 @@ def des_encrypt(pt, key, is_encrypting=True):
     combine = left + right
 
     # Final permutation: final rearranging of bits to get cipher text
-    cipher_text = permute(combine, final_perm, 64)
+    cipher_text = bin2hex(permute(combine, final_perm, 64))
+    
     return cipher_text, key1
 
 
 def des_decrypt(block_of_cipher_text, key):
     # implement des algorithm here
-    if not key or invalid_key(key):
+    
+    if not key or invalid_key(block_of_cipher_text, key):
         # key gen and validation
-        key = generate_key()
-
-    plain_text_block = "des decrypt!"
-    return plain_text_block, key
+        key = generate_key(len(block_of_cipher_text))
+        
+    return des_encrypt(block_of_cipher_text, key, False)
