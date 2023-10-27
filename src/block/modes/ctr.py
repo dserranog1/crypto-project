@@ -3,8 +3,12 @@ def int_to_bytearray(integer):
     byte_array = integer.to_bytes(8, byteorder='big', signed=True)
     return byte_array
 
-def pad_message(message):
-    block_size_bits = 128
+def pad_message(message, algorithm_name):
+    if algorithm_name == "AES":
+        block_size_bits = 128 # 128 bits
+    elif algorithm_name == "DES":
+        block_size_bits = 64 # 64 bits
+
     block_size_bytes = block_size_bits // 8
 
     # Calculate the number of bytes needed to pad the message
@@ -14,13 +18,20 @@ def pad_message(message):
     padding = bytearray([padding_length] * padding_length)
 
     # Convert the original message to a bytearray and then concatenate the padding
-    padded_message = bytearray(message, 'utf-8') + padding
+    padded_message = bytearray(message, "utf-8") + padding
 
     return padded_message
 
-def convert_to_128bit_blocks(input_string):
-    padded_message = pad_message(input_string)
-    block_size_bytes = 16  # 128 bits
+
+def convert_to_128bit_blocks(input_string, algorithm_name):
+
+    if algorithm_name == "AES":
+        block_size_bytes = 16 # 128 bits
+    elif algorithm_name == "DES":
+        block_size_bytes = 8 # 64 bits
+
+    padded_message = pad_message(input_string, algorithm_name)
+    
 
     # Make sure each block is exactly 128 bits (16 bytes) by zero-padding if needed
     if len(padded_message) % block_size_bytes != 0:
@@ -29,7 +40,10 @@ def convert_to_128bit_blocks(input_string):
 
     num_blocks = len(padded_message) // block_size_bytes
 
-    blocks = [padded_message[i:i + block_size_bytes] for i in range(0, len(padded_message), block_size_bytes)]
+    blocks = [
+        padded_message[i : i + block_size_bytes]
+        for i in range(0, len(padded_message), block_size_bytes)
+    ]
     return blocks
 
 def byte_xor(ba1, ba2):
@@ -42,7 +56,7 @@ def ctr(plain_text, key, algorithm, algorithm_name):
     # cipher_block, key = algorithm(block_of_plain_text)
     
     
-    blocks = convert_to_128bit_blocks(plain_text)
+    blocks = convert_to_128bit_blocks(plain_text, algorithm_name)
 
     # generate list of nonces
     

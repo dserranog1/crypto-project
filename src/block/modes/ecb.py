@@ -1,5 +1,9 @@
-def pad_message(message):
-    block_size_bits = 128
+def pad_message(message, algorithm_name):
+    if algorithm_name == "AES":
+        block_size_bits = 128 # 128 bits
+    elif algorithm_name == "DES":
+        block_size_bits = 64 # 64 bits
+
     block_size_bytes = block_size_bits // 8
 
     # Calculate the number of bytes needed to pad the message
@@ -14,9 +18,15 @@ def pad_message(message):
     return padded_message
 
 
-def convert_to_128bit_blocks(input_string):
-    padded_message = pad_message(input_string)
-    block_size_bytes = 16  # 128 bits
+def convert_to_128bit_blocks(input_string, algorithm_name):
+
+    if algorithm_name == "AES":
+        block_size_bytes = 16 # 128 bits
+    elif algorithm_name == "DES":
+        block_size_bytes = 8 # 64 bits
+
+    padded_message = pad_message(input_string, algorithm_name)
+    
 
     # Make sure each block is exactly 128 bits (16 bytes) by zero-padding if needed
     if len(padded_message) % block_size_bytes != 0:
@@ -37,7 +47,7 @@ def ecb(plain_text, key, algorithm, algorithm_name):
     # use it as you would with any other function: e.g.
     # cipher_block, key = algorithm(block_of_plain_text)
 
-    blocks = convert_to_128bit_blocks(plain_text)
+    blocks = convert_to_128bit_blocks(plain_text, algorithm_name)
 
     # first, cipher the first block and get the key
 
