@@ -3,16 +3,16 @@ from .analysis import *
 from .keygen import generate_key
 
 
-def invalid_key(key, pt):
-    if len(key) != len(pt):
+def invalid_key(block_of_plain_text, key):
+    if len(key) != len(block_of_plain_text):
         return True
     return False
 
 
-def des_encrypt(pt, key, is_encrypting=True):
+def des_encrypt(block_of_plain_text, key, is_encrypting=True):
 
-    if not key or invalid_key(key, pt):
-        key = generate_key(len(pt))
+    if not key or invalid_key(block_of_plain_text, key):
+        key = generate_key(len(block_of_plain_text))
         
     # Key's copy
     key1 = key
@@ -25,15 +25,15 @@ def des_encrypt(pt, key, is_encrypting=True):
         rkb = rkb[::-1]
         rk = rk[::-1]
 
-    pt = hex2bin(pt)
+    block_of_plain_text = hex2bin(block_of_plain_text)
 
     # Initial Permutation
-    pt = permute(pt, initial_perm, 64)
-    print("After initial permutation", bin2hex(pt))
+    block_of_plain_text = permute(block_of_plain_text, initial_perm, 64)
+    print("After initial permutation", bin2hex(block_of_plain_text))
 
     # Splitting
-    left = pt[0:32]
-    right = pt[32:64]
+    left = block_of_plain_text[0:32]
+    right = block_of_plain_text[32:64]
     for i in range(0, 16):
         # Expansion D-box: Expanding the 32 bits data into 48 bits
         right_expanded = permute(right, exp_d, 48)
@@ -81,8 +81,8 @@ def des_encrypt(pt, key, is_encrypting=True):
 def des_decrypt(block_of_cipher_text, key):
     # implement des algorithm here
     
-    if not key or invalid_key(key, pt):
+    if not key or invalid_key(block_of_cipher_text, key):
         # key gen and validation
-        key = generate_key(len(pt))
+        key = generate_key(len(block_of_cipher_text))
         
     return des_encrypt(block_of_cipher_text, key, False)
