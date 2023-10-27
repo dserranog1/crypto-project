@@ -36,7 +36,7 @@ def byte_xor(ba1, ba2):
     return bytes([_a ^ _b for _a, _b in zip(ba1, ba2)])
 
 
-def ctr(plain_text, key, algorithm):
+def ctr(plain_text, key, algorithm, algorithm_name):
     # algorithm is a function, it can be AES or DES, mode should be agnostic to what algorithm is being used
     # use it as you would with any other function: e.g.
     # cipher_block, key = algorithm(block_of_plain_text)

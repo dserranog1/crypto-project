@@ -74,7 +74,7 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             algorithm_fn = block_algorithms_manager[algorithm_name][ENCRYPT]
             key = format_input(values[algorithm_name + KEY_INPUT])
             input = values[algorithm_name + CLEAR_TEXT_INPUT_BOX]
-            encrypted_text, key = mode(input, key, algorithm_fn)
+            encrypted_text, key = mode(input, key, algorithm_fn, algorithm_name)
             window[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
             window[algorithm_name + KEY_INPUT].update(key)
         elif action in DECRYPT:
@@ -82,7 +82,7 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             algorithm_fn = block_algorithms_manager[algorithm_name][DECRYPT]
             key = format_input(values[algorithm_name + KEY_INPUT])
             input = values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
-            clear_text, key = mode(input, key, algorithm_fn)
+            clear_text, key = mode(input, key, algorithm_fn, algorithm_name)
             window[algorithm_name + CLEAR_TEXT_INPUT_BOX].update(clear_text)
             window[algorithm_name + KEY_INPUT].update(key)
         elif action in KEY_GEN:
