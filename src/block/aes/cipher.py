@@ -1,9 +1,15 @@
 ## Module for cipher and decipher logic
 from .analysis import *
 from .keygen import generate_key
+from block.utils.common import is_binary
+
+
 
 
 def invalid_key(key):
+    if len(key) == 32 and is_binary(key):
+        return True
+    return False
     # implement key validation logic
 
     # if not clave:
@@ -13,7 +19,7 @@ def invalid_key(key):
     # else:
     #    clave = int(clave)
     # return clave
-    return True  # or False
+    # or False
 
 
 # def aes_encrypt(block_of_plain_text, key):
@@ -30,7 +36,13 @@ def invalid_key(key):
 ## data is block_of_plain_text
 
 
-def aes_encrypt(data: bytes, key: bytes) -> bytes:
+def aes_encrypt(data: bytes, key: str) -> bytes:
+
+# implement aes algorithm here
+    if not key or invalid_key(key):
+        # key gen and validation
+        key = generate_key()
+    key = bytearray.fromhex(key)
     key_bit_length = len(key) * 8
 
     if key_bit_length == 128:
@@ -57,7 +69,7 @@ def aes_encrypt(data: bytes, key: bytes) -> bytes:
     add_round_key(state, key_schedule, round=nr)
 
     cipher = bytes_from_state(state)
-    return cipher, key
+    return cipher, key.hex()
 
 
 # def aes_decrypt(block_of_cipher_text, key):
@@ -98,4 +110,4 @@ def aes_decrypt(cipher: bytes, key: bytes) -> bytes:
     add_round_key(state, key_schedule, round=0)
 
     plain = bytes_from_state(state)
-    return plain, key
+    return plain, key.decode("utf-8")
