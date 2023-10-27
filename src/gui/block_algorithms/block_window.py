@@ -34,7 +34,7 @@ block_algorithms_manager = {
     DES: {
         ENCRYPT: des_encrypt,
         DECRYPT: des_decrypt,
-        KEY_GEN: aes_keygen,
+        KEY_GEN: des_keygen,
     },
     TDES: {
         ENCRYPT: t_des_encrypt,

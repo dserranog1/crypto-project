@@ -9,9 +9,10 @@ def pad_message(message):
     padding = bytearray([padding_length] * padding_length)
 
     # Convert the original message to a bytearray and then concatenate the padding
-    padded_message = bytearray(message, 'utf-8') + padding
+    padded_message = bytearray(message, "utf-8") + padding
 
     return padded_message
+
 
 def convert_to_128bit_blocks(input_string):
     padded_message = pad_message(input_string)
@@ -24,7 +25,10 @@ def convert_to_128bit_blocks(input_string):
 
     num_blocks = len(padded_message) // block_size_bytes
 
-    blocks = [padded_message[i:i + block_size_bytes] for i in range(0, len(padded_message), block_size_bytes)]
+    blocks = [
+        padded_message[i : i + block_size_bytes]
+        for i in range(0, len(padded_message), block_size_bytes)
+    ]
     return blocks
 
 
@@ -32,9 +36,9 @@ def ecb(plain_text, key, algorithm):
     # algorithm is a function, it can be AES or DES, mode should be agnostic to what algorithm is being used
     # use it as you would with any other function: e.g.
     # cipher_block, key = algorithm(block_of_plain_text)
-    
+
     blocks = convert_to_128bit_blocks(plain_text)
-    
+
     # first, cipher the first block and get the key
 
     cipher_block_1, key = algorithm(blocks[0], key)
@@ -50,9 +54,9 @@ def ecb(plain_text, key, algorithm):
     # Convert the encrypted bytearray blocks back to strings
 
     encrypted_blocks_text = [block.decode("utf-8") for block in encrypted_blocks]
-    
+
     # Join the list to have only a string
-    
+
     cipher_text = "".join(encrypted_blocks_text)
 
     return cipher_text, key
