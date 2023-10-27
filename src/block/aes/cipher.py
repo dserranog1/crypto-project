@@ -33,7 +33,7 @@ def invalid_key(key):
 
 ## data is block_of_plain_text     
 
-def aes_encryption(data: bytes, key: bytes) -> bytes:
+def ae(data: bytes, key: bytes) -> bytes:
 
     key_bit_length = len(key) * 8
 
