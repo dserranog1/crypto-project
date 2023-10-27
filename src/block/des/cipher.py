@@ -1,39 +1,37 @@
 ## Module for cipher and decipher logic
 from .analysis import *
 from .keygen import generate_key
+from utils.common import is_binary
 
 
-def invalid_key(block_of_plain_text, key):
-    if len(key) != len(block_of_plain_text):
+def invalid_key(key):
+    if len(key) == 64 and is_binary(key):
         return True
     return False
 
 
-def des_encrypt(block_of_plain_text, key, is_encrypting=True):
+def des_encrypt(block_of_64_bits, key, is_encrypting=True):
+    if not key or invalid_key(key):
+        key = generate_key()
 
-    if not key or invalid_key(block_of_plain_text, key):
-        key = generate_key(len(block_of_plain_text))
-        
     # Key's copy
     key1 = key
     # Hex to binary
     key = hex2bin(key)
 
     rkb, rk = round_keys(key)
-    
+
     if not is_encrypting:
         rkb = rkb[::-1]
         rk = rk[::-1]
 
-    block_of_plain_text = hex2bin(block_of_plain_text)
-
     # Initial Permutation
-    block_of_plain_text = permute(block_of_plain_text, initial_perm, 64)
-    print("After initial permutation", bin2hex(block_of_plain_text))
+    block_of_64_bits = permute(block_of_64_bits, initial_perm, 64)
+    print("After initial permutation", bin2hex(block_of_64_bits))
 
     # Splitting
-    left = block_of_plain_text[0:32]
-    right = block_of_plain_text[32:64]
+    left = block_of_64_bits[0:32]
+    right = block_of_64_bits[32:64]
     for i in range(0, 16):
         # Expansion D-box: Expanding the 32 bits data into 48 bits
         right_expanded = permute(right, exp_d, 48)
@@ -74,15 +72,11 @@ def des_encrypt(block_of_plain_text, key, is_encrypting=True):
 
     # Final permutation: final rearranging of bits to get cipher text
     cipher_text = bin2hex(permute(combine, final_perm, 64))
-    
+
     return cipher_text, key1
 
 
 def des_decrypt(block_of_cipher_text, key):
     # implement des algorithm here
-    
-    if not key or invalid_key(block_of_cipher_text, key):
-        # key gen and validation
-        key = generate_key(len(block_of_cipher_text))
-        
+
     return des_encrypt(block_of_cipher_text, key, False)
