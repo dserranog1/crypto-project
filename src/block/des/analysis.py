@@ -21,7 +21,6 @@ def text2hex(texto):
 
 # Hexadecimal a Binario
 def hex2bin(s):
-    print("converting", s)
     mp = {
         "0": "0000",
         "1": "0001",

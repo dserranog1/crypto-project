@@ -1,8 +1,9 @@
 # Module for key generation
 
 
-import secrets
+from .analysis import tres_claves
+
 
 def generate_key():  # generates
-    key = secrets.token_hex(8)
-    return key.upper()
+    keys = tres_claves()
+    return " ".join(keys)

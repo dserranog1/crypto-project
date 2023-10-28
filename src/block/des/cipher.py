@@ -27,7 +27,6 @@ def des_encrypt(hex_as_str, key, is_encrypting=True):
 
     # Initial Permutation
     block_of_64_bits = permute(block_of_64_bits, initial_perm, 64)
-    print("After initial permutation", bin2hex(block_of_64_bits))
 
     # Splitting
     left = block_of_64_bits[0:32]
@@ -65,7 +64,6 @@ def des_encrypt(hex_as_str, key, is_encrypting=True):
         # Swapper
         if i != 15:
             left, right = right, left
-        print("Round ", i + 1, " ", bin2hex(left), " ", bin2hex(right), " ", rk[i])
 
     # Combination
     combine = left + right

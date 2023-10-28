@@ -26,7 +26,7 @@
 #         block_size_bytes = 8 # 64 bits
 
 #     padded_message = pad_message(input_string, algorithm_name)
-    
+
 
 #     # Make sure each block is exactly 128 bits (16 bytes) by zero-padding if needed
 #     if len(padded_message) % block_size_bytes != 0:
@@ -41,19 +41,19 @@
 #     ]
 #     return blocks
 
+
 def split_string_into_blocks(input_string, block_size):
     if not input_string:
         return []
 
     blocks = []
     for i in range(0, len(input_string), block_size):
-        block = input_string[i:i+block_size]
+        block = input_string[i : i + block_size]
         if len(block) < block_size:
             block = "0" * (block_size - len(block)) + block
         blocks.append(block)
 
     return blocks
-
 
 
 def ecb(plain_text, key, algorithm, algorithm_name):
@@ -63,13 +63,12 @@ def ecb(plain_text, key, algorithm, algorithm_name):
 
     if algorithm_name == "AES":
         block_size = 32
-    elif algorithm_name == "DES":
+    elif algorithm_name in ["DES", "TDES"]:
         block_size = 16
 
     blocks = split_string_into_blocks(plain_text, block_size)
 
     # first, cipher the first block and get the key
-
     cipher_block_1, key = algorithm(blocks[0], key)
 
     # Now, cipher the other blocks using the same key as the first block
