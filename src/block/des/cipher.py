@@ -10,14 +10,14 @@ def invalid_key(key):
     return False
 
 
-def des_encrypt(block_of_64_bits, key, is_encrypting=True):
+def des_encrypt(hex_as_str, key, is_encrypting=True):
     if not key or invalid_key(key):
         key = generate_key()
 
-    # Key's copy
     key1 = key
     # Hex to binary
     key = hex2bin(key)
+    block_of_64_bits = hex2bin(hex_as_str)
 
     rkb, rk = round_keys(key)
 

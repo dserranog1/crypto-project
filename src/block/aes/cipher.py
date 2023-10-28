@@ -4,45 +4,20 @@ from .keygen import generate_key
 from block.utils.common import is_binary
 
 
-
-
 def invalid_key(key):
     if len(key) == 32 and is_binary(key):
         return True
     return False
     # implement key validation logic
 
-    # if not clave:
-    #   clave = generate_key()
-    # elif not clave.isdigit():
-    #    clave = generate_key()
-    # else:
-    #    clave = int(clave)
-    # return clave
-    # or False
 
-
-# def aes_encrypt(block_of_plain_text, key):
-# implement aes algorithm here
-# if not key or invalid_key(key):
-#    # key gen and validation
-#    key = generate_key()
-
-#
-# cipher_text_block = "aes encrypt!"
-# return cipher_text_block, key
-
-
-## data is block_of_plain_text
-
-
-def aes_encrypt(data: bytes, key: str) -> bytes:
-
-# implement aes algorithm here
+def aes_encrypt(hex_as_str: str, key: str) -> bytes:
+    # implement aes algorithm here
     if not key or invalid_key(key):
         # key gen and validation
         key = generate_key()
-    key = bytearray.fromhex(key)
+    key = bytes.fromhex(key)
+    data = bytes.fromhex(hex_as_str)
     key_bit_length = len(key) * 8
 
     if key_bit_length == 128:
@@ -69,21 +44,15 @@ def aes_encrypt(data: bytes, key: str) -> bytes:
     add_round_key(state, key_schedule, round=nr)
 
     cipher = bytes_from_state(state)
-    return cipher, key.hex()
+    return cipher.hex(), key.hex()
 
 
-# def aes_decrypt(block_of_cipher_text, key):
-#    # implement aes algorithm here
-#    if not key or invalid_key(key):
-#        # key gen and validation
-#        key = generate_key()
-#
-#    plain_text_block = "aes decrypt!"
-#    return plain_text_block, key
-#
-
-
-def aes_decrypt(cipher: bytes, key: bytes) -> bytes:
+def aes_decrypt(cipher_as_str: bytes, key: bytes) -> bytes:
+    if not key or invalid_key(key):
+        # key gen and validation
+        key = generate_key()
+    key = bytes.fromhex(key)
+    cipher = bytes.fromhex(cipher_as_str)
     key_byte_length = len(key)
     key_bit_length = key_byte_length * 8
     nk = key_byte_length // 4
@@ -110,4 +79,4 @@ def aes_decrypt(cipher: bytes, key: bytes) -> bytes:
     add_round_key(state, key_schedule, round=0)
 
     plain = bytes_from_state(state)
-    return plain, key.decode("utf-8")
+    return plain.hex(), key.hex()
