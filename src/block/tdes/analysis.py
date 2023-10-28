@@ -1,5 +1,7 @@
 # Module for crypto analysis
 
+import hashlib
+
 def tres_claves(key=None):
   
   if key == None or (len(key) != 64 and not is_binary(key)):
