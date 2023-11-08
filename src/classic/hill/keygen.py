@@ -13,6 +13,7 @@ def key2string(key):
 
 
 def validate_key(key_matrix, is_image=False):
+    # verify, is crashing
     if is_image:
         module = 256
     else:

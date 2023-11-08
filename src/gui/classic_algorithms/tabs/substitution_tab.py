@@ -12,7 +12,7 @@ from gui.common.custom_elements import (
 
 def create_substitution_tab():
     return sg.Tab(
-        "Algoritmo Substitution",
+        "Algoritmo sustitución",
         [
             [create_title("Texto claro")],
             [center_column(create_clear_text_box(SUBSTITUTION))],

@@ -31,6 +31,7 @@ def revisar_clave(clave):
 
 
 def cifrado_permutacion(clave_permutacion, texto):
+    # estamos aplicando permutacion a la inversa
     clave_permutacion = revisar_clave(clave_permutacion)
     return (
         concatenar_listas_encriptadas(

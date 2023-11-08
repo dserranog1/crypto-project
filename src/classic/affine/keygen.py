@@ -16,6 +16,8 @@ def relativos(x, y):
 
 
 def validate_key(key):
+    if not key.isdigit():
+        return False
     if relativos(int(key[0]), 26) != 1:
         return False
     if int(key[1]) >= 26:

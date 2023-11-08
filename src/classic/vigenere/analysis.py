@@ -2,6 +2,8 @@
 
 alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+# poner criptonalasis, poder obtener el mensaje sin la contraseña
+
 
 def eliminar_caracteres_invalidos(mensaje):
     mensaje = mensaje.upper()

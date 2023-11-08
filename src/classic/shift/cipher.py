@@ -14,6 +14,7 @@ def revisar_clave(clave):
 
 
 def cifrado_desplazamiento(clave, mensaje):
+    # en lugar de modulo 26, que trabaje con mod 256(ascii)
     clave = revisar_clave(clave)
     return (
         convertir_letras(

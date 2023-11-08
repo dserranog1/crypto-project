@@ -16,6 +16,7 @@ lista_claves = [
 ]
 
 
+# generar claves completamente aleatorias
 def generar_clave():
     clave = lista_claves[randint(0, len(lista_claves))]
     return clave

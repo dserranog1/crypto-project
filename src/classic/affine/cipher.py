@@ -76,6 +76,8 @@ def cifrado_afin(clave_afin, texto):
     clave_afin[0] = int(clave_afin[0])
     clave_afin[1] = int(clave_afin[1])
     if not validate_key(clave_afin):
+        # despues de 3 intentos con clave invalida, generar una aleatoria
+        # clave invalida: no son primos relativos
         clave_afin = generate_key()
     elif len(clave_afin) == 0:
         clave_afin = generate_key()
