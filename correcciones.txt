@@ -1,7 +1,7 @@
 
 ----- Clásicos
 Afin:
-- Error: Si la clave es invalida, el programa se muere (Daniel)
+- Error: Si la clave es invalida, el programa se muere (Daniel) * done
 - Feature: Permitir 3 intentos de ingreso de clave, luego generar una aleatoria (Daniel)
 
 Desplazamiento:

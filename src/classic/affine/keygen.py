@@ -58,4 +58,4 @@ def generate_key():
     ]
     a = np.random.choice(A)
     b = np.random.choice(num)
-    return (a, b)
+    return str(a) + " " + str(b)
