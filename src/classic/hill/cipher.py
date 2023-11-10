@@ -8,9 +8,9 @@ def encryption_algorithm(key, message):
     # print(key)
     module = 26
     if not key:
-        key = generate_key(len(message))
+        key = generate_key(3)
     if not message:
-        return " ", key
+        return " ", generate_key(3)
     key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     # print(key.shape)
     # print(key)
