@@ -7,20 +7,16 @@ def encryption_algorithm(key, message):
     # Validate the key or generate one if not provided
     # print(key)
     module = 26
-    if not key:
+    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+    if len(key) == 0 or not validate_key(key):
         key = generate_key(3)
+        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     if not message:
         return " ", generate_key(3)
-    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
-    # print(key.shape)
-    # print(key)
-    # print(np.linalg.det(key))
 
     # Check if the key is a numpy array
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
-
-    validate_key(key)
 
     message = message.replace(" ", "").upper()  # Remove spaces and convert to uppercase
     message_len = len(message)
@@ -48,16 +44,15 @@ def encryption_algorithm(key, message):
 
 def decryption_algorithm(key, message):
     module = 26
-    if not key:
-        key = generate_key(len(message))
-    if not message:
-        return " ", key
     key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+    if len(key) == 0 or not validate_key(key):
+        key = generate_key(3)
+        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+    if not message:
+        return " ", generate_key(3)
 
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
-
-    validate_key(key)
 
     key_det = int(np.linalg.det(key))
 
@@ -67,14 +62,13 @@ def decryption_algorithm(key, message):
 
     key_inv = np.round(inv_det * key_adj) % module
 
-    # print("key inverse: ",key_inv)
     # Calculate the modular multiplicative inverse of key_det modulo module
-    for i in range(1, module):
-        if (key_det * i) % module == 1:
-            key_det_inverse = i
-            break
-    else:
-        raise ValueError("Key determinant has no modular multiplicative inverse")
+    # for i in range(1, module):
+    #     if (key_det * i) % module == 1:
+    #         key_det_inverse = i
+    #         break
+    # else:
+    #     raise ValueError("Key determinant has no modular multiplicative inverse")
 
     decrypted_message = ""
     key_size = key.shape[0]
@@ -93,23 +87,23 @@ def decryption_algorithm(key, message):
 
 def encrypt_image(key, image):
     # Validate the key or generate one if not provided
-    # print(key)
     module = 256
-    if not key:
-        key = generate_key(len(image), is_image=True)
     key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+    if len(key) == 0 or not validate_key(key, is_image=True):
+        key = generate_key(3)
+        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
 
     # Check if the key is a numpy array
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
 
-    validate_key(key, is_image=True)
     image_len = len(image)
     key_size = key.shape[0]
 
     # Pad the message if its length is not a multiple of the key size
     if image_len % key_size != 0:
         padding = key_size - (image % key_size)
+        print(padding)
         for i in range(padding):
             image.append(255)
 
@@ -117,6 +111,7 @@ def encrypt_image(key, image):
     for i in range(0, len(image), key_size):
         chunk = image[i : i + key_size]
         encrypted_chunk = np.dot(chunk, key) % module
+        encrypted_chunk = encrypted_chunk.astype("uint8")
         encrypted_image.extend(encrypted_chunk.tolist())
 
     return encrypted_image, key2string(key)
@@ -124,14 +119,12 @@ def encrypt_image(key, image):
 
 def decrypt_image(key, image):
     module = 256
-    if not key:
-        key = generate_key(len(image), is_image=True)
     key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
-
+    if len(key) == 0 or not validate_key(key, is_image=True):
+        key = generate_key(3)
+        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
-
-    validate_key(key, is_image=True)
 
     key_det = int(np.linalg.det(key))
 
@@ -142,11 +135,11 @@ def decrypt_image(key, image):
     key_inv = np.round(inv_det * key_adj) % module
 
     # Calculate the modular multiplicative inverse of key_det modulo module
-    for i in range(1, module):
-        if (key_det * i) % module == 1:
-            break
-    else:
-        raise ValueError("Key determinant has no modular multiplicative inverse")
+    # for i in range(1, module):
+    #     if (key_det * i) % module == 1:
+    #         break
+    # else:
+    #     raise ValueError("Key determinant has no modular multiplicative inverse")
 
     decrypted_image = []
     key_size = key.shape[0]
@@ -154,6 +147,7 @@ def decrypt_image(key, image):
     for i in range(0, len(image), key_size):
         chunk = image[i : i + key_size]
         decrypted_chunk = np.dot(chunk, key_inv) % module
+        decrypted_chunk = decrypted_chunk.astype("uint8")
         decrypted_image.extend(decrypted_chunk.tolist())
 
     return decrypted_image, key2string(key)

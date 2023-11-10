@@ -14,8 +14,15 @@ def format_input(input):
     return input.replace("(", "").replace(")", "").replace(",", "")
 
 
-def is_valid_image_input(input):
+def is_valid_clear_image_input(input):
     format = input.upper().split(".")
-    if format[-1] not in ["PNG", "JPG", "JPEG"]:
+    if format[-1] not in ["JPG", "JPEG"]:
+        return False
+    return True
+
+
+def is_valid_encrypted_image_input(input):
+    format = input.upper().split(".")
+    if format[-1] not in ["PNG"]:
         return False
     return True

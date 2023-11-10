@@ -8,7 +8,7 @@ def list_to_image(image_as_list, original_shape, path_to_save):
     image = image.reshape(original_shape)
     new_img = Image.fromarray(image.astype(np.uint8))
     new_img.show()
-    new_img.save(path_to_save + ".jpeg")
+    new_img.save(path_to_save + ".png")
 
 
 def image_to_list(image_path):

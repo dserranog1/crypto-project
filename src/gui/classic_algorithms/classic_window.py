@@ -1,6 +1,10 @@
 import PySimpleGUI as sg
 from globals import *
-from utils.helpers import format_input, is_valid_image_input
+from utils.helpers import (
+    format_input,
+    is_valid_clear_image_input,
+    is_valid_encrypted_image_input,
+)
 from utils.text_to_image import image_to_list, list_to_image
 
 # tabs imports
@@ -180,7 +184,7 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
         )
         if not file:
             return  # ojo aqui
-        while not is_valid_image_input(file):
+        while not is_valid_clear_image_input(file):
             sg.popup_error("Formato invalido")
             file = sg.popup_get_file(
                 "Seleccion la imagen por favor (PNG, JPG, JPEG)",
@@ -202,15 +206,15 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
         window[HILL_KEY_INPUT].update(key)
     elif algorithm_and_action[0] == "HILL_IMAGE_DECRYPT":
         file = sg.popup_get_file(
-            "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+            "Seleccion la imagen por favor (PNG)",
             "Seleccione una imagen",
         )
         if not file:
             return
-        while not is_valid_image_input(file):
+        while not is_valid_encrypted_image_input(file):
             sg.popup_error("Formato invalido", title="Ok")
             file = sg.popup_get_file(
-                "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+                "Seleccion la imagen por favor (PNG)",
                 "Seleccione una imagen",
             )
             if not file:
