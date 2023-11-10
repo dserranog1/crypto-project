@@ -192,6 +192,8 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
             )
             if not file:
                 break
+        if not file:
+            return
         # begin encryption
         image, original_shape = image_to_list(file)
         input_key = values[HILL_KEY_INPUT]
@@ -212,6 +214,7 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
         if not file:
             return
         while not is_valid_encrypted_image_input(file):
+            file = ""
             sg.popup_error("Formato invalido", title="Ok")
             file = sg.popup_get_file(
                 "Seleccion la imagen por favor (PNG)",
@@ -219,6 +222,8 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
             )
             if not file:
                 break
+        if not file:
+            return
         # begin decryption
         image, original_shape = image_to_list(file)
         input_key = values[HILL_KEY_INPUT]

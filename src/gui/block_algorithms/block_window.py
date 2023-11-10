@@ -125,6 +125,8 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             )
             if not file:
                 break
+        if not file:
+            return
         # begin encryption
         image, original_shape = image_to_list(file)
         input_key = values[AES_KEY_INPUT]
@@ -155,6 +157,8 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             )
             if not file:
                 break
+        if not file:
+            return
         # begin decryption
         image, original_shape = image_to_list(file)
         input_key = values[AES_KEY_INPUT]
