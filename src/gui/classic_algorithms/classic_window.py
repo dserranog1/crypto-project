@@ -179,7 +179,7 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
             )
     elif algorithm_and_action[0] == "HILL_IMAGE_ENCRYPT":
         file = sg.popup_get_file(
-            "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+            "Seleccion la imagen por favor (JPG, JPEG)",
             "Seleccione una imagen",
         )
         if not file:
@@ -187,7 +187,7 @@ def handle_classics_window_event(window: sg.Window | None, event, values):
         while not is_valid_clear_image_input(file):
             sg.popup_error("Formato invalido")
             file = sg.popup_get_file(
-                "Seleccion la imagen por favor (PNG, JPG, JPEG)",
+                "Seleccion la imagen por favor (JPG, JPEG)",
                 "Seleccione una imagen",
             )
             if not file:

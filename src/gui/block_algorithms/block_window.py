@@ -1,4 +1,12 @@
 import PySimpleGUI as sg
+from utils.helpers import (
+    format_input,
+    is_valid_clear_image_input,
+    is_valid_encrypted_image_input,
+    image_to_hex,
+    heximage_to_listimage,
+)
+from utils.text_to_image import image_to_list, list_to_image
 
 # tabs imports
 from .tabs.aes_tab import create_aes_tab
@@ -66,8 +74,8 @@ def create_block_window():
 
 def handle_block_window_event(window: sg.Window | None, event, values):
     algorithm_and_action = event.split("-", 1)
-    algorithm_name, action = algorithm_and_action[0], algorithm_and_action[1]
     if algorithm_and_action[0] in block_algorithms_manager:
+        algorithm_name, action = algorithm_and_action[0], algorithm_and_action[1]
         if action in ENCRYPT:
             mode = block_algorithms_manager[values[algorithm_name + MODE]]
             algorithm_fn = block_algorithms_manager[algorithm_name][ENCRYPT]
@@ -102,3 +110,63 @@ def handle_block_window_event(window: sg.Window | None, event, values):
                 title="Resultados del análisis",
                 size=(50, 10),
             )
+    elif algorithm_and_action[0] == "AES_IMAGE_ENCRYPT":
+        file = sg.popup_get_file(
+            "Seleccion la imagen por favor (JPG, JPEG)",
+            "Seleccione una imagen",
+        )
+        if not file:
+            return  # ojo aqui
+        while not is_valid_clear_image_input(file):
+            sg.popup_error("Formato invalido")
+            file = sg.popup_get_file(
+                "Seleccion la imagen por favor (JPG, JPEG)",
+                "Seleccione una imagen",
+            )
+            if not file:
+                break
+        # begin encryption
+        image, original_shape = image_to_list(file)
+        input_key = values[AES_KEY_INPUT]
+        if not input_key:
+            input_key = aes_keygen()
+        original_length = len(image)
+        image_as_hex = image_to_hex(image)
+        mode = block_algorithms_manager[values[AES + MODE]]
+        encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_encrypt, "AES")
+        encrypted_image = heximage_to_listimage(encrypted_image_as_hex)
+        # Aditional items might've been added to complete the encryption, so we go back to the original size
+        encrypted_image = encrypted_image[:original_length]
+        list_to_image(encrypted_image, original_shape, "aes_encrypted_image")
+        # end encryption
+        window[AES_KEY_INPUT].update(key)
+    elif algorithm_and_action[0] == "AES_IMAGE_DECRYPT":
+        file = sg.popup_get_file(
+            "Seleccion la imagen por favor (PNG)",
+            "Seleccione una imagen",
+        )
+        if not file:
+            return
+        while not is_valid_encrypted_image_input(file):
+            sg.popup_error("Formato invalido", title="Ok")
+            file = sg.popup_get_file(
+                "Seleccion la imagen por favor (PNG)",
+                "Seleccione una imagen",
+            )
+            if not file:
+                break
+        # begin decryption
+        image, original_shape = image_to_list(file)
+        input_key = values[AES_KEY_INPUT]
+        if not input_key:
+            input_key = aes_keygen()
+        original_length = len(image)
+        image_as_hex = image_to_hex(image)
+        mode = block_algorithms_manager[values[AES + MODE]]
+        encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_decrypt, "AES")
+        encrypted_image = heximage_to_listimage(encrypted_image_as_hex)
+        # Aditional items might've been added to complete the encryption, so we go back to the original size
+        encrypted_image = encrypted_image[:original_length]
+        list_to_image(encrypted_image, original_shape, "aes_decrypted_image")
+        # end decryption
+        window[AES_KEY_INPUT].update(key)

@@ -74,5 +74,5 @@ def create_select_mode(algorithm):
     modes = ["CBC", "CFB", "CTR", "ECB"]
     return [
         sg.Text("Seleccione el modo"),
-        sg.Combo(modes, key=algorithm + MODE, readonly=True, default_value=modes[0]),
+        sg.Combo(modes, key=algorithm + MODE, readonly=True, default_value=modes[3]),
     ]
