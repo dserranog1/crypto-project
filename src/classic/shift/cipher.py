@@ -58,7 +58,7 @@ def revisar_clave(clave):
 #
 
 
-def cifrado_desplazamiento(texto, clave):
+def cifrado_desplazamiento(clave, texto):
     clave = revisar_clave(clave)
     resultado = ""
 
@@ -69,7 +69,7 @@ def cifrado_desplazamiento(texto, clave):
 
 
 
-def descifrado_desplazamiento(texto_cifrado, clave):
+def descifrado_desplazamiento(clave, texto_cifrado):
     clave = revisar_clave(clave)
     return cifrado_desplazamiento(texto_cifrado, -clave)
 
