@@ -63,14 +63,10 @@ def cifrado_desplazamiento(texto, clave):
     resultado = ""
 
     for char in texto:
-        if char.isprintable():  # Cifra caracteres imprimibles y deja otros sin cambios
-            start = 32  # El valor ASCII del primer caracter imprimible
-            end = 255  # El valor ASCII del último caracter imprimible
-            resultado += chr((ord(char) - start + clave) % (end - start + 1) + start)
-        else:
-            resultado += char
+        resultado += chr((ord(char) + clave) % 256)
 
     return resultado
+
 
 
 def descifrado_desplazamiento(texto_cifrado, clave):
