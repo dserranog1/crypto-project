@@ -61,6 +61,10 @@ def ecb(plain_text, key, algorithm, algorithm_name):
     # use it as you would with any other function: e.g.
     # cipher_block, key = algorithm(block_of_plain_text)
 
+    # Convert the input text to hex:
+
+    # hex = plain_text.encode("latin-1").hex()
+
     if algorithm_name == "AES":
         block_size = 32
     elif algorithm_name in ["DES", "TDES"]:
@@ -86,5 +90,10 @@ def ecb(plain_text, key, algorithm, algorithm_name):
     # Join the list to have only a string
 
     cipher_text = "".join(encrypted_blocks)
+
+    # Convert the result back to string:
+    # print(cipher_text)
+    # byte_string = bytes.fromhex(cipher_text)            
+    # result = byte_string.decode('latin-1')
 
     return cipher_text, key

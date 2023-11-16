@@ -81,7 +81,12 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             algorithm_fn = block_algorithms_manager[algorithm_name][ENCRYPT]
             key = format_input(values[algorithm_name + KEY_INPUT])
             input = values[algorithm_name + CLEAR_TEXT_INPUT_BOX]
-            encrypted_text, key = mode(input, key, algorithm_fn, algorithm_name)
+            # Convert string to hex:
+            hex_input = input.encode("latin-1").hex()
+            # print("Plain text in hex: ", hex)
+            encrypted_text, key = mode(hex_input, key, algorithm_fn, algorithm_name)
+            # Convert hex back to string:
+            # encrypted_text = bytes.fromhex(encrypted_text).decode('latin-1')
             window[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
             window[algorithm_name + KEY_INPUT].update(key)
         elif action in DECRYPT:
@@ -89,7 +94,11 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             algorithm_fn = block_algorithms_manager[algorithm_name][DECRYPT]
             key = format_input(values[algorithm_name + KEY_INPUT])
             input = values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
+            # Convert string to hex:
+            # hex = input.encode("latin-1").hex()
             clear_text, key = mode(input, key, algorithm_fn, algorithm_name)
+            # Convert hex back to string:
+            clear_text = bytes.fromhex(clear_text).decode('latin-1')
             window[algorithm_name + CLEAR_TEXT_INPUT_BOX].update(clear_text)
             window[algorithm_name + KEY_INPUT].update(key)
         elif action in KEY_GEN:
