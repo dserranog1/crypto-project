@@ -25,10 +25,10 @@ Hill:
 Modos:
 - Feature: Terminar los modos (encriptar y decriptar) (Rafa & Andrea)
 
-ECB * done
-CTR * (check why the nonce is being encrypted differently)
-CBC * TODO
-CFB * TODO
+ECB * done - images ok
+CTR * done - images ok
+CBC * done - images ok
+CFB * done - images ok
 
 
 ---- Clave pública (Cristián y Andrea)

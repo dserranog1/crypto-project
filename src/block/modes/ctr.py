@@ -63,7 +63,7 @@ def pad_block(block, size):
     return "0" * (size - len(block)) + block
 
 
-def ctr(plain_text, key, algorithm, algorithm_name):
+def ctr(plain_text, key, algorithm, algorithm_name, encrypt):
     # algorithm is a function, it can be AES or DES, mode should be agnostic to what algorithm is being used
     # use it as you would with any other function: e.g.
     # cipher_block, key = algorithm(block_of_plain_text)
@@ -83,7 +83,7 @@ def ctr(plain_text, key, algorithm, algorithm_name):
     for i in range(len(blocks)):
         hex_ = str(i).encode("latin-1").hex()
         hex_ = pad_block(hex_, block_size)
-        print(hex_)
+        # print(hex_)
         nonce_list.append(hex_)
 
     # encrypt each nonce
@@ -98,11 +98,12 @@ def ctr(plain_text, key, algorithm, algorithm_name):
     encrypted_nonce.insert(0, cipher_nonce_1)
 
     # Now we have 2 lists. One of message blocks and other of enctypted nonces. To cipher the message, we do xor of each block with its corresponding nonce
-    print("Encrypted nonce: ", encrypted_nonce)
-    print("Blocks:", blocks)
+    # print("Encrypted nonce: ", encrypted_nonce)
+    # print("Blocks:", blocks)
     cipher_blocks = [hex(int(a, 16)^int(b,16))[2:] for a, b in zip(blocks, encrypted_nonce)]
+    cipher_blocks = [pad_block(block, block_size) for block in cipher_blocks]
 
-    print("Cipher blocks: ", cipher_blocks)
+    # print("Cipher blocks: ", cipher_blocks)
     # Join the list to have only a string
     
     cipher_text = "".join(cipher_blocks)

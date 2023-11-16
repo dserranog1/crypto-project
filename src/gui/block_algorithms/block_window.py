@@ -84,19 +84,23 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             # Convert string to hex:
             hex_input = input.encode("latin-1").hex()
             # print("Plain text in hex: ", hex)
-            encrypted_text, key = mode(hex_input, key, algorithm_fn, algorithm_name)
+            encrypted_text, key = mode(hex_input, key, algorithm_fn, algorithm_name, encrypt = True)
             # Convert hex back to string:
             # encrypted_text = bytes.fromhex(encrypted_text).decode('latin-1')
             window[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
             window[algorithm_name + KEY_INPUT].update(key)
         elif action in DECRYPT:
             mode = block_algorithms_manager[values[algorithm_name + MODE]]
-            algorithm_fn = block_algorithms_manager[algorithm_name][DECRYPT]
+            
+            if values[algorithm_name + MODE] == 'CTR' or values[algorithm_name + MODE] == 'CFB':
+                algorithm_fn = block_algorithms_manager[algorithm_name][ENCRYPT] # If the mode is ctr, use the same encryption
+            else:
+                algorithm_fn = block_algorithms_manager[algorithm_name][DECRYPT]
             key = format_input(values[algorithm_name + KEY_INPUT])
             input = values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
             # Convert string to hex:
             # hex = input.encode("latin-1").hex()
-            clear_text, key = mode(input, key, algorithm_fn, algorithm_name)
+            clear_text, key = mode(input, key, algorithm_fn, algorithm_name, encrypt = False)
             # Convert hex back to string:
             clear_text = bytes.fromhex(clear_text).decode('latin-1')
             window[algorithm_name + CLEAR_TEXT_INPUT_BOX].update(clear_text)
@@ -144,7 +148,7 @@ def handle_block_window_event(window: sg.Window | None, event, values):
         original_length = len(image)
         image_as_hex = image_to_hex(image)
         mode = block_algorithms_manager[values[AES + MODE]]
-        encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_encrypt, "AES")
+        encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_encrypt, "AES", encrypt = True)
         encrypted_image = heximage_to_listimage(encrypted_image_as_hex)
         # Aditional items might've been added to complete the encryption, so we go back to the original size
         encrypted_image = encrypted_image[:original_length]
@@ -176,7 +180,10 @@ def handle_block_window_event(window: sg.Window | None, event, values):
         original_length = len(image)
         image_as_hex = image_to_hex(image)
         mode = block_algorithms_manager[values[AES + MODE]]
-        encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_decrypt, "AES")
+        if values[AES + MODE] == "CTR" or values[AES + MODE] == "CFB":
+            encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_encrypt, "AES", encrypt = False)
+        else:    
+            encrypted_image_as_hex, key = mode(image_as_hex, input_key, aes_decrypt, "AES", encrypt = False)
         encrypted_image = heximage_to_listimage(encrypted_image_as_hex)
         # Aditional items might've been added to complete the encryption, so we go back to the original size
         encrypted_image = encrypted_image[:original_length]
