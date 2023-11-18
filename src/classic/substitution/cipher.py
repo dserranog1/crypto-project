@@ -1,6 +1,5 @@
 # Module for cipher and decipher logic
 import re
-from .analysis import *
 from .keygen import generate_key
 
 

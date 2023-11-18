@@ -34,6 +34,7 @@ from classic.vigenere.keygen import generar_clave as generar_clave_vigenere
 # substitution imports
 from classic.substitution.cipher import sustitucion_cripter, sustitucion_desencriptar
 from classic.substitution.keygen import generate_key as generate_substitution_key
+from classic.substitution.analysis import subsitution_analysis
 
 # affine imports
 from classic.affine.cipher import cifrado_afin, descifrado_afin
@@ -107,6 +108,7 @@ classic_algorithms_manager = {
         ENCRYPT: sustitucion_cripter,
         DECRYPT: sustitucion_desencriptar,
         KEY_GEN: generate_substitution_key,
+        ANALYZE: subsitution_analysis,
     },
     AFFINE: {
         ENCRYPT: cifrado_afin,

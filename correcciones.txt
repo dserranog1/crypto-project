@@ -5,14 +5,14 @@ Afin:
 - Feature: Permitir 3 intentos de ingreso de clave, luego generar una aleatoria (Daniel)
 
 Desplazamiento:
-- Feature: Que trabaje con ASCII (mod 256) en lugar del abecedario (mod 26) (Aleja)
+- Feature: Que trabaje con ASCII (mod 256) en lugar del abecedario (mod 26) (Aleja) * done
 
 Vigenere:
 - Feature: Hacer el análisis (Hervin)
 - Feature: Generar claves completamente aleatorias (se tienen algunas palabras pretederminadas) (Hervin)
 
 Sustitución:
-- Feature: Hacer el análisis (de frecuencias),  (Cristián)
+- Feature: Hacer el análisis (de frecuencias),  (Cristián) * done
 
 Hill:
 - Error: se esta muriendo al validar clave (Daniel & Rafa) cuando se ingresan caracteres el alfabeto
