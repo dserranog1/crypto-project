@@ -16,7 +16,7 @@ def relativos(x, y):
 
 
 def validate_key(key):
-    if not key.isdigit():
+    if not key[0].isdigit() or not key[1].isdigit():
         return False
     if relativos(int(key[0]), 26) != 1:
         return False
@@ -26,8 +26,8 @@ def validate_key(key):
 
 
 def generate_key():
-    # primos relativos a= 3,5,7,9,11,13,15,17,19,21,25
-    A = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 25]
+    # primos relativos a= 3,5,7,9,11,15,17,19,21,25
+    A = [3, 5, 7, 9, 11, 15, 17, 19, 21, 25]
     num = [
         0,
         1,
@@ -58,4 +58,4 @@ def generate_key():
     ]
     a = np.random.choice(A)
     b = np.random.choice(num)
-    return str(a) + " " + str(b)
+    return [a,b]

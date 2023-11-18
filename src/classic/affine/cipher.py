@@ -72,13 +72,15 @@ def cifrado_afin(clave_afin, texto):
     numeros_encontrados = re.findall(r"\d+", clave_afin)
     numeros_separados_por_espacios = " ".join(numeros_encontrados)
     clave_afin = numeros_separados_por_espacios
-    if not validate_key(clave_afin):
+    clave_afin = clave_afin.split()
+    if len(clave_afin) != 2:
+        clave_afin = generate_key()
+    
+    elif not validate_key(clave_afin):
         # despues de 3 intentos con clave invalida, generar una aleatoria
         # clave invalida: no son primos relativos
         clave_afin = generate_key()
-    elif len(clave_afin) == 0:
-        clave_afin = generate_key()
-    clave_afin = clave_afin.split()
+    
     clave_afin[0] = int(clave_afin[0])
     clave_afin[1] = int(clave_afin[1])
     lista = []
@@ -100,16 +102,21 @@ def descifrado_afin(clave_afin, texto_cifrado):
     numeros_separados_por_espacios = " ".join(numeros_encontrados)
     clave_afin = numeros_separados_por_espacios
     clave_afin = clave_afin.split()
+    if len(clave_afin) != 2:
+        clave_afin = generate_key()
+        
+
+    elif not validate_key(clave_afin):
+        # despues de 3 intentos con clave invalida, generar una aleatoria
+        # clave invalida: no son primos relativos
+        clave_afin = generate_key()
+    
     clave_afin[0] = int(clave_afin[0])
     clave_afin[1] = int(clave_afin[1])
-    lista = []
-    if not validate_key(clave_afin):
-        clave_afin = generate_key()
-    elif len(clave_afin) == 0:
-        clave_afin = generate_key()
-    # busquemos el inverso de a
+   
+    lista=[]
     for j in range(2, 26):
-        if clave_afin[0] * j % 26 == 1:
+        if (clave_afin[0] * j) % 26 == 1:
             inver = j
             break
     for k in texto_cifrado:
