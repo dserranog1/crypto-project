@@ -9,10 +9,10 @@ import hashlib
 def generar_clave():
     
     # Genera un tamaño aleatorio para el texto entre 5 y 20 caracteres
-    tamano = randint(5, 20)
+    tamano = random.randint(5, 20)
 
     # Genera caracteres aleatorios para el texto utilizando el rango de caracteres imprimibles ASCII
-    clave_aleatoria = ''.join(random.choice(string.ascii_lowercase) for _ in range(tamano))
+    clave_aleatoria = ''.join(random.choice(string.ascii_lowercase) for _ in range(tamano)).upper()
 
     #hash_clave = hashlib.sha256(clave_aleatoria.encode()).hexdigest()
 
