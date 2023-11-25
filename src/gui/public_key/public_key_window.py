@@ -92,25 +92,25 @@ def handle_public_key_window_event(window: sg.Window | None, event, values):
         if action in ENCRYPT:
             algorithm_fn = public_key_algorithms_manager[algorithm_name][ENCRYPT]
             private = ""
-            key = format_input(values[STANDARD + PRIVATE + KEY_INPUT])
-            if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
-                p, q, private, public = generate_and_update_keys(
-                    window, values, algorithm_name
-                )
-            key = private
-            input = values[STANDARD + ENCRYPTED_TEXT_INPUT_BOX]
-            clear_text, key = algorithm_fn(input, key)
-            window[STANDARD + ENCRYPTED_TEXT_INPUT_BOX].update(clear_text)
-        elif action in DECRYPT:
-            algorithm_fn = public_key_algorithms_manager[algorithm_name][DECRYPT]
-            public = ""
             key = format_input(values[STANDARD + PUBLIC + KEY_INPUT])
             if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
                 p, q, private, public = generate_and_update_keys(
                     window, values, algorithm_name
                 )
-            key = public
+                key = private
             input = values[STANDARD + CLEAR_TEXT_INPUT_BOX]
+            clear_text, key = algorithm_fn(input, key)
+            window[STANDARD + ENCRYPTED_TEXT_INPUT_BOX].update(clear_text)
+        elif action in DECRYPT:
+            algorithm_fn = public_key_algorithms_manager[algorithm_name][DECRYPT]
+            public = ""
+            key = format_input(values[STANDARD + PRIVATE + KEY_INPUT])
+            if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
+                p, q, private, public = generate_and_update_keys(
+                    window, values, algorithm_name
+                )
+                key = public
+            input = values[STANDARD + ENCRYPTED_TEXT_INPUT_BOX]
             clear_text, key = algorithm_fn(input, key)
             window[STANDARD + CLEAR_TEXT_INPUT_BOX].update(clear_text)
         elif action in PRIME_GEN:
