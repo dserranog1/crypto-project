@@ -4,6 +4,7 @@ from utils.helpers import generate_prime_number, is_prime
 import random
 import numpy as np
 
+
 def generate_key(primes=""):
     primes = primes.split()
     p, q = 0, 0
@@ -23,17 +24,18 @@ def generate_key(primes=""):
 
     p = int(p)
     q = int(q)
+
     n = p * q
     phi_n = (p - 1) * (q - 1)
 
     # Elegir un exponente público e que sea coprimo con phi_n
-    b= random.randint(p+q, phi_n)
-    while (np.gcd(b,phi_n)!=1):
-        b= random.randint(p+q, phi_n)
+    b = random.randint(p + q, phi_n)
+    while np.gcd(b, phi_n) != 1:
+        b = random.randint(p + q, phi_n)
     # Calcular el exponente privado d
     a = pow(b, -1, phi_n)
 
     public = (n, b)
-    private = (n,a)
-    
+    private = (n, a)
+
     return p, q, private, public

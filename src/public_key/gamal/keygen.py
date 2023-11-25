@@ -4,7 +4,7 @@
 from utils.helpers import generate_prime_number, is_prime
 
 
-def generate_key(primes):
+def generate_key(primes=""):
     primes = primes.split()
     p, q = 0, 0
     if len(primes) != 2:
@@ -22,6 +22,11 @@ def generate_key(primes):
         elif not is_prime(int(q)):
             q = generate_prime_number()
 
+    p = int(p)
+    q = int(q)
+
+    # KEY GENERATION LOGIC GOES HERE
+    
     private = str(p) + " private gamal"
     public = str(q) + " public gamal"
     return p, q, private, public
