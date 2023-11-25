@@ -87,56 +87,119 @@ def create_public_key_window():
 def handle_public_key_window_event(window: sg.Window | None, event, values):
     standard_and_action = event.split("-", 1)
     if len(standard_and_action) == 2:
-        _, action = standard_and_action[0], standard_and_action[1]
-        algorithm_name = values[STANDARD + ALGORITHM]
-        if action in ENCRYPT:
-            algorithm_fn = public_key_algorithms_manager[algorithm_name][ENCRYPT]
-            private = ""
-            key = format_input(values[STANDARD + PUBLIC + KEY_INPUT])
-            if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
-                p, q, private, public = generate_and_update_keys(
-                    window, values, algorithm_name
+        tab_name, action = standard_and_action[0], standard_and_action[1]
+        print(tab_name)
+        if tab_name == STANDARD:
+            algorithm_name = values[STANDARD + ALGORITHM]
+            if action in ENCRYPT:
+                algorithm_fn = public_key_algorithms_manager[algorithm_name][ENCRYPT]
+                private = ""
+                key = format_input(values[STANDARD + PUBLIC + KEY_INPUT])
+                if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](
+                    key
+                ):
+                    p, q, private, public = generate_and_update_keys(
+                        window, values, algorithm_name
+                    )
+                    key = private
+                input = values[STANDARD + CLEAR_TEXT_INPUT_BOX]
+                clear_text, key = algorithm_fn(input, key)
+                window[STANDARD + ENCRYPTED_TEXT_INPUT_BOX].update(clear_text)
+            elif action in DECRYPT:
+                algorithm_fn = public_key_algorithms_manager[algorithm_name][DECRYPT]
+                public = ""
+                key = format_input(values[STANDARD + PRIVATE + KEY_INPUT])
+                if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](
+                    key
+                ):
+                    p, q, private, public = generate_and_update_keys(
+                        window, values, algorithm_name
+                    )
+                    key = public
+                input = values[STANDARD + ENCRYPTED_TEXT_INPUT_BOX]
+                clear_text, key = algorithm_fn(input, key)
+                window[STANDARD + CLEAR_TEXT_INPUT_BOX].update(clear_text)
+            elif action in PRIME_GEN:
+                p = generate_prime_number()
+                q = generate_prime_number()
+                window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
+            elif action in KEY_GEN:
+                primes = format_input(values[STANDARD + KEY_INPUT])
+                p, q, private, public = public_key_algorithms_manager[algorithm_name][
+                    KEY_GEN
+                ](primes)
+                window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
+                window[STANDARD + PRIVATE + KEY_INPUT].update(private)
+                window[STANDARD + PUBLIC + KEY_INPUT].update(public)
+            elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
+                action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
+            ):
+                input_box = action.split("-", 1)[1]
+                window[STANDARD + "-" + input_box].update("")
+            elif action in ANALYZE:
+                output = public_key_algorithms_manager[algorithm_name][ANALYZE](
+                    values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
                 )
-                key = private
-            input = values[STANDARD + CLEAR_TEXT_INPUT_BOX]
-            clear_text, key = algorithm_fn(input, key)
-            window[STANDARD + ENCRYPTED_TEXT_INPUT_BOX].update(clear_text)
-        elif action in DECRYPT:
-            algorithm_fn = public_key_algorithms_manager[algorithm_name][DECRYPT]
-            public = ""
-            key = format_input(values[STANDARD + PRIVATE + KEY_INPUT])
-            if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
-                p, q, private, public = generate_and_update_keys(
-                    window, values, algorithm_name
+                # formatted_output = format_attack(output)
+                sg.popup_scrolled(
+                    output,
+                    title="Resultados del análisis",
+                    size=(50, 10),
                 )
-                key = public
-            input = values[STANDARD + ENCRYPTED_TEXT_INPUT_BOX]
-            clear_text, key = algorithm_fn(input, key)
-            window[STANDARD + CLEAR_TEXT_INPUT_BOX].update(clear_text)
-        elif action in PRIME_GEN:
-            p = generate_prime_number()
-            q = generate_prime_number()
-            window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
-        elif action in KEY_GEN:
-            primes = format_input(values[STANDARD + KEY_INPUT])
-            p, q, private, public = public_key_algorithms_manager[algorithm_name][
-                KEY_GEN
-            ](primes)
-            window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
-            window[STANDARD + PRIVATE + KEY_INPUT].update(private)
-            window[STANDARD + PUBLIC + KEY_INPUT].update(public)
-        elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
-            action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
-        ):
-            input_box = action.split("-", 1)[1]
-            window[STANDARD + "-" + input_box].update("")
-        elif action in ANALYZE:
-            output = public_key_algorithms_manager[algorithm_name][ANALYZE](
-                values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
-            )
-            # formatted_output = format_attack(output)
-            sg.popup_scrolled(
-                output,
-                title="Resultados del análisis",
-                size=(50, 10),
-            )
+        elif tab_name == SIGN:
+            algorithm_name = values[SIGN + ALGORITHM]
+            if action in ENCRYPT:
+                algorithm_fn = public_key_algorithms_manager[algorithm_name][ENCRYPT]
+                private = ""
+                key = format_input(values[SIGN + PUBLIC + KEY_INPUT])
+                if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](
+                    key
+                ):
+                    p, q, private, public = generate_and_update_keys(
+                        window, values, algorithm_name
+                    )
+                    key = private
+                input = values[SIGN + CLEAR_TEXT_INPUT_BOX]
+                clear_text, key = algorithm_fn(input, key)
+                window[SIGN + ENCRYPTED_TEXT_INPUT_BOX].update(clear_text)
+            elif action in DECRYPT:
+                algorithm_fn = public_key_algorithms_manager[algorithm_name][DECRYPT]
+                public = ""
+                key = format_input(values[SIGN + PRIVATE + KEY_INPUT])
+                if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](
+                    key
+                ):
+                    p, q, private, public = generate_and_update_keys(
+                        window, values, algorithm_name
+                    )
+                    key = public
+                input = values[SIGN + ENCRYPTED_TEXT_INPUT_BOX]
+                clear_text, key = algorithm_fn(input, key)
+                window[SIGN + CLEAR_TEXT_INPUT_BOX].update(clear_text)
+            elif action in PRIME_GEN:
+                p = generate_prime_number()
+                q = generate_prime_number()
+                window[SIGN + KEY_INPUT].update(str(p) + ", " + str(q))
+            elif action in KEY_GEN:
+                primes = format_input(values[SIGN + KEY_INPUT])
+                p, q, private, public = public_key_algorithms_manager[algorithm_name][
+                    KEY_GEN
+                ](primes)
+                window[SIGN + KEY_INPUT].update(str(p) + ", " + str(q))
+                window[SIGN + PRIVATE + KEY_INPUT].update(private)
+                window[SIGN + PUBLIC + KEY_INPUT].update(public)
+            elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
+                action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
+            ):
+                input_box = action.split("-", 1)[1]
+                window[SIGN + "-" + input_box].update("")
+            elif action in ANALYZE:
+                output = public_key_algorithms_manager[algorithm_name][ANALYZE](
+                    values[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX]
+                )
+                # formatted_output = format_attack(output)
+                sg.popup_scrolled(
+                    output,
+                    title="Resultados del análisis",
+                    size=(50, 10),
+                )
