@@ -1,23 +1,44 @@
 import PySimpleGUI as sg
-from utils.helpers import (
-    format_input,
-)
+from utils.helpers import format_input, generate_prime_number
 
 # tabs imports
 from .tabs.standard import create_standard_tab
 from .tabs.sign import create_sign_tab
 
 # rsa imports
-from public_key.rsa.cipher import rsa_encrypt, rsa_decrypt
+from public_key.rsa.cipher import (
+    rsa_encrypt,
+    rsa_decrypt,
+    invalid_key as rsa_invalid_key,
+)
 from public_key.rsa.keygen import generate_key as rsa_keygen
 
 # gamal imports
-from public_key.gamal.cipher import gamal_encrypt, gamal_decrypt
+from public_key.gamal.cipher import (
+    gamal_encrypt,
+    gamal_decrypt,
+    invalid_key as gamal_invalid_key,
+)
 from public_key.gamal.keygen import generate_key as gamal_keygen
 
 # rabin imports
-from public_key.rabin.cipher import rabin_encrypt, rabin_decrypt
+from public_key.rabin.cipher import (
+    rabin_encrypt,
+    rabin_decrypt,
+    invalid_key as rabin_invalid_key,
+)
 from public_key.rabin.keygen import generate_key as rabin_keygen
+
+
+def generate_and_update_keys(window, values, algorithm_name):
+    primes = format_input(values[STANDARD + KEY_INPUT])
+    p, q, private, public = public_key_algorithms_manager[algorithm_name][KEY_GEN](
+        primes
+    )
+    window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
+    window[STANDARD + PRIVATE + KEY_INPUT].update(private)
+    window[STANDARD + PUBLIC + KEY_INPUT].update(public)
+    return p, q, private, public
 
 
 from globals import *
@@ -29,16 +50,19 @@ public_key_algorithms_manager = {
         ENCRYPT: rsa_encrypt,
         DECRYPT: rsa_decrypt,
         KEY_GEN: rsa_keygen,
+        VALID_KEY: rsa_invalid_key,
     },
     GAMAL: {
         ENCRYPT: gamal_encrypt,
         DECRYPT: gamal_decrypt,
         KEY_GEN: gamal_keygen,
+        VALID_KEY: gamal_invalid_key,
     },
     RABIN: {
         ENCRYPT: rabin_encrypt,
         DECRYPT: rabin_decrypt,
         KEY_GEN: rabin_keygen,
+        VALID_KEY: rabin_invalid_key,
     },
 }
 
@@ -67,22 +91,40 @@ def handle_public_key_window_event(window: sg.Window | None, event, values):
         algorithm_name = values[STANDARD + ALGORITHM]
         if action in ENCRYPT:
             algorithm_fn = public_key_algorithms_manager[algorithm_name][ENCRYPT]
-            key = format_input(values[STANDARD + KEY_INPUT])
-            print("formatted key ", key)
-            input = values[STANDARD + CLEAR_TEXT_INPUT_BOX]
-            encrypted_text, key = algorithm_fn(input, key)
-            window[STANDARD + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
-            window[STANDARD + KEY_INPUT].update(key)
+            private = ""
+            key = format_input(values[STANDARD + PRIVATE + KEY_INPUT])
+            if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
+                p, q, private, public = generate_and_update_keys(
+                    window, values, algorithm_name
+                )
+            key = private
+            input = values[STANDARD + ENCRYPTED_TEXT_INPUT_BOX]
+            clear_text, key = algorithm_fn(input, key)
+            window[STANDARD + ENCRYPTED_TEXT_INPUT_BOX].update(clear_text)
         elif action in DECRYPT:
             algorithm_fn = public_key_algorithms_manager[algorithm_name][DECRYPT]
-            key = format_input(values[STANDARD + KEY_INPUT])
+            public = ""
+            key = format_input(values[STANDARD + PUBLIC + KEY_INPUT])
+            if not key or public_key_algorithms_manager[algorithm_name][VALID_KEY](key):
+                p, q, private, public = generate_and_update_keys(
+                    window, values, algorithm_name
+                )
+            key = public
             input = values[STANDARD + CLEAR_TEXT_INPUT_BOX]
-            encrypted_text, key = algorithm_fn(input, key)
-            window[STANDARD + CLEAR_TEXT_INPUT_BOX].update(encrypted_text)
-            window[STANDARD + KEY_INPUT].update(key)
+            clear_text, key = algorithm_fn(input, key)
+            window[STANDARD + CLEAR_TEXT_INPUT_BOX].update(clear_text)
+        elif action in PRIME_GEN:
+            p = generate_prime_number()
+            q = generate_prime_number()
+            window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
         elif action in KEY_GEN:
-            generated_key = public_key_algorithms_manager[algorithm_name][KEY_GEN]()
-            window[STANDARD + KEY_INPUT].update(generated_key)
+            primes = format_input(values[STANDARD + KEY_INPUT])
+            p, q, private, public = public_key_algorithms_manager[algorithm_name][
+                KEY_GEN
+            ](primes)
+            window[STANDARD + KEY_INPUT].update(str(p) + ", " + str(q))
+            window[STANDARD + PRIVATE + KEY_INPUT].update(private)
+            window[STANDARD + PUBLIC + KEY_INPUT].update(public)
         elif (action in DELETE + CLEAR_TEXT_INPUT_BOX) or (
             action in DELETE + ENCRYPTED_TEXT_INPUT_BOX
         ):

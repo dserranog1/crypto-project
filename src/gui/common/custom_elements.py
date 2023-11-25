@@ -86,3 +86,22 @@ def create_algorithm_selection(mode):
             algorithms, key=mode + ALGORITHM, readonly=True, default_value=algorithms[0]
         ),
     ]
+
+
+def create_public_private_key_layout(algorithm):
+    return sg.Column(
+        [
+            [
+                sg.Text("Primos", pad=((0, 0), (20, 20))),
+                sg.Input(key=algorithm + KEY_INPUT),
+            ],
+            [
+                sg.Text("Clave privada", pad=((0, 0), (20, 20))),
+                sg.Input(key=algorithm + PRIVATE + KEY_INPUT),
+            ],
+            [
+                sg.Text("Clave publica", pad=((0, 0), (20, 20))),
+                sg.Input(key=algorithm + PUBLIC + KEY_INPUT),
+            ],
+        ]
+    )
