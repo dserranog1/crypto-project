@@ -33,10 +33,10 @@ CFB * done - images ok
 
 ---- Clave pública (Cristián y Andrea)
 
-- RSA 
+- Falta validar las claves
+- RSA * done
 - Rabin
 - ElGamal
-- Curvas elípticas
 - Firmas digitales
 
 ---- Manual
