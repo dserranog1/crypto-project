@@ -9,6 +9,10 @@ from gui.block_algorithms.block_window import (
     handle_block_window_event,
 )
 from gui.common.custom_elements import center_column
+from gui.public_key.public_key_window import (
+    create_public_key_window,
+    handle_public_key_window_event,
+)
 
 
 def make_selection_window():
@@ -23,6 +27,7 @@ def make_selection_window():
                 [
                     [sg.Button("Algoritmos clásicos", key=CLASSICS)],
                     [sg.Button("Algoritmos bloque", key=BLOCK)],
+                    [sg.Button("Algoritmos de clave pública", key=PUBLIC_KEY)],
                 ]
             )
         ],
@@ -46,6 +51,7 @@ def init_main_window():
     window_manager = {
         CLASSICS: {"create_fn": create_classics_window, "window": None},
         BLOCK: {"create_fn": create_block_window, "window": None},
+        PUBLIC_KEY: {"create_fn": create_public_key_window, "window": None},
     }
 
     make_selection_window()
@@ -61,3 +67,5 @@ def init_main_window():
             handle_classics_window_event(window, event, values)
         elif window.Title == BLOCK:
             handle_block_window_event(window, event, values)
+        elif window.Title == PUBLIC_KEY:
+            handle_public_key_window_event(window, event, values)

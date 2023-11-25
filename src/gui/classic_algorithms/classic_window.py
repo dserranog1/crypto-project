@@ -80,7 +80,6 @@ from classic.hill.keygen import generate_key as hill_keygen
     For proper formatting the analysis MUST be returned with the above-mentioned form.
     """
 
-# clave publica: RSA, Gavin, Gamal
 
 classic_algorithms_manager = {
     SHIFT: {

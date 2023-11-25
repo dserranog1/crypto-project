@@ -76,3 +76,13 @@ def create_select_mode(algorithm):
         sg.Text("Seleccione el modo"),
         sg.Combo(modes, key=algorithm + MODE, readonly=True, default_value=modes[3]),
     ]
+
+
+def create_algorithm_selection(mode):
+    algorithms = [RSA, RABIN, GAMAL]
+    return [
+        sg.Text("Seleccione el algoritmo"),
+        sg.Combo(
+            algorithms, key=mode + ALGORITHM, readonly=True, default_value=algorithms[0]
+        ),
+    ]
