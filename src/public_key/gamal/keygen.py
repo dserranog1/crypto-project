@@ -12,7 +12,7 @@ def generate_key(primes=""):
         q = generate_prime_number()
     else:
         p, q = primes[0], primes[1]
-        print("after destructuring", p, q)
+
         if not p.isdigit():
             p = generate_prime_number()
         elif not is_prime(int(p)):
@@ -26,7 +26,7 @@ def generate_key(primes=""):
     q = int(q)
 
     # KEY GENERATION LOGIC GOES HERE
-    
+
     private = str(p) + " private gamal"
     public = str(q) + " public gamal"
     return p, q, private, public

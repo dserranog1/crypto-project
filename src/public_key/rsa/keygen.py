@@ -35,7 +35,7 @@ def generate_key(primes=""):
     # Calcular el exponente privado d
     a = pow(b, -1, phi_n)
 
-    public = (n, b)
-    private = (n, a)
+    public = f"{str(n)} {str(b)}"
+    private = f"{str(n)} {str(a)}"
 
     return p, q, private, public

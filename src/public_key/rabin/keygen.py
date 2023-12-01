@@ -27,7 +27,7 @@ def generate_key(primes=""):
     while q % 4 != 3 or q == p:
         q = generate_prime_number()
     n = p * q
-    private = (p, q)
-    public = n
+    private = f"{str(p)} {str(q)}"
+    public = str(n)
 
     return p, q, private, public
