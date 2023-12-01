@@ -88,7 +88,6 @@ def handle_public_key_window_event(window: sg.Window | None, event, values):
     standard_and_action = event.split("-", 1)
     if len(standard_and_action) == 2:
         tab_name, action = standard_and_action[0], standard_and_action[1]
-        print(tab_name)
         if tab_name == STANDARD:
             algorithm_name = values[STANDARD + ALGORITHM]
             if action in ENCRYPT:

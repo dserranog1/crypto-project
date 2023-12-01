@@ -61,14 +61,13 @@ def pad_message(message, block_size):
   message_len = len(message)
   return message + "#"*(block_size - message_len)
 
-def invalid_key(key,is_private):
+def invalid_key(key, _):
     # implement key validation logic
     
-    return False
+    return True
 
 def encriptar(message,clave_publica):
   m = base_alphabet_to_26(message) 
-  print(clave_publica,type(clave_publica))# message in a number
   g,p,k = clave_publica
   b = np.random.randint(2,p-1)
   y1 = MCR(g,b,p)
@@ -77,16 +76,13 @@ def encriptar(message,clave_publica):
   y1_letra = base_26_to_alphabet(y1)
   y2_letra = base_26_to_alphabet(y2)
   encrypted_message = (y1_letra,y2_letra)
-  print(encrypted_message)
   return encrypted_message
 
 def gamal_encrypt(clear_text: str, key: str):
-    # implement gamal algorithm here
+    key = key.split(" ")
+
+    key = (int(key[0]), int(key[1]), int(key[2]))
     clear_text = texto_a_silabas(clear_text,3)
-    key = ast.literal_eval(key)
-    print(key)
-    key = (int(key[0]),int(key[1]),int(key[2]))
-    print(key,type(key),key[0])
     cipher_blocks = [
             str(encriptar(silaba, key)) for silaba in clear_text
         ]
@@ -113,9 +109,11 @@ def desencriptar(encrypted_message,clave_privada):
 
 
 def gamal_decrypt(encrypted_text: str, key: str):
+    key = key.split(" ")
+
+    key = (int(key[0]), int(key[1]))
+
     encrypted_text = ast.literal_eval(encrypted_text)
-    key = ast.literal_eval(key)
-    key = (int(key[0]),int(key[1]))
     encrypted_text0 = texto_a_silabas(encrypted_text[0],6)
     encrypted_text1 = texto_a_silabas(encrypted_text[1],6)
     cipher_blocks = [
