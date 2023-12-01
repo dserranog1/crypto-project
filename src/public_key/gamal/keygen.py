@@ -1,5 +1,5 @@
 # Module for key generation
-
+import numpy as np
 
 from utils.helpers import generate_prime_number, is_prime
 
@@ -23,10 +23,17 @@ def generate_key(primes=""):
             q = generate_prime_number()
 
     p = int(p)
-    q = int(q)
+    q = int(0)
 
     # KEY GENERATION LOGIC GOES HERE
-
-    private = str(p) + " private gamal"
-    public = str(q) + " public gamal"
+    g =  np.random.randint(1,p-1)
+    a = np.random.randint(1,p-1)
+    while a==g:
+        a = np.random.randint(1,p-1)
+    k = pow(g,a,p)  
+    clave_publica = (g,p,k)
+    clave_privada = (a,p)
+    private = str(clave_privada)
+    public = str(clave_publica)
     return p, q, private, public
+
