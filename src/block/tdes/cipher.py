@@ -2,18 +2,26 @@
 from .analysis import *
 from .keygen import generate_key
 from block.des.cipher import des_encrypt, des_decrypt
+from block.utils.common import is_binary, is_hex
 
 
-def invalid_key(key):
-    # implement key validation logic
-    return True  # or False
+def valid_key(key):
+
+    keys = key.split(" ")
+    if len(keys) != 3:
+        return False
+
+    for key in keys:
+        if len(key) != 16 or not is_hex(key):
+            return False
+    return True
 
 
 def t_des_encrypt(block_of_64_bits, key):
     # # implement t_des algorithm here
-    # if not key or invalid_key(key):
-    #     # key gen and validation
-    #     key = generate_key()
+    if not key or not valid_key(key):
+        # key gen and validation
+        key = generate_key()
 
     # cipher_text_block = "tdes encrypt!"
     # return cipher_text_block, key
@@ -38,9 +46,12 @@ def t_des_encrypt(block_of_64_bits, key):
 
 
 def t_des_decrypt(block_of_64_bits, key):
+
+    if not key or not valid_key(key):
+        # key gen and validation
+        key = generate_key()
+
     keys_arr = key.split(" ")
-    if len(keys_arr) != 3:
-        keys_arr = tres_claves()
 
     key_3, key_2, key_1 = keys_arr[0], keys_arr[1], keys_arr[2]
 

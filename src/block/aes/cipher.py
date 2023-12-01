@@ -1,19 +1,19 @@
 ## Module for cipher and decipher logic
 from .analysis import *
 from .keygen import generate_key
-from block.utils.common import is_binary
+from block.utils.common import is_hex
 
 
-def invalid_key(key):
-    if len(key) == 32 and is_binary(key):
+def valid_key(key):
+
+    if len(key) == 32 and is_hex(key):
         return True
     return False
-    # implement key validation logic
 
 
 def aes_encrypt(hex_as_str: str, key: str) -> bytes:
     # implement aes algorithm here
-    if not key or invalid_key(key):
+    if not key or not valid_key(key):
         # key gen and validation
         key = generate_key()
     key = bytes.fromhex(key)
@@ -48,7 +48,7 @@ def aes_encrypt(hex_as_str: str, key: str) -> bytes:
 
 
 def aes_decrypt(cipher_as_str: bytes, key: bytes) -> bytes:
-    if not key or invalid_key(key):
+    if not key or not valid_key(key):
         # key gen and validation
         key = generate_key()
     key = bytes.fromhex(key)

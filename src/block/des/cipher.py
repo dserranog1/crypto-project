@@ -1,17 +1,17 @@
 ## Module for cipher and decipher logic
 from .analysis import *
 from .keygen import generate_key
-from block.utils.common import is_binary
+from block.utils.common import is_binary, is_hex
 
 
 def invalid_key(key):
-    if len(key) == 64 and is_binary(key):
+    if len(key) == 16 and is_hex(key):
         return True
     return False
 
 
 def des_encrypt(hex_as_str, key, is_encrypting=True):
-    if not key or invalid_key(key):
+    if not key or not invalid_key(key):
         key = generate_key()
 
     key1 = key
