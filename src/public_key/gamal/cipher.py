@@ -69,16 +69,16 @@ def invalid_key(key, is_private):
 
     keys = key.split(" ")
 
-    if is_private and len(keys) == 3:
-
-        k1, k2, k3 = keys
-        return k1.isnumeric() and k2.isnumeric() and k3.isnumeric()
-
-    elif not is_private and len(keys) == 2:
+    if is_private and len(keys) == 2:
 
         k1, k2 = keys
 
         return k1.isnumeric() and k2.isnumeric()
+
+    elif not is_private and len(keys) == 3:
+
+        k1, k2, k3 = keys
+        return k1.isnumeric() and k2.isnumeric() and k3.isnumeric()
 
     return False
 
