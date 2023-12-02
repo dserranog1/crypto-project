@@ -5,7 +5,6 @@ import numpy as np
 
 def encryption_algorithm(key, message):
     # Validate the key or generate one if not provided
-    # print(key)
     module = 26
 
     if len(key) == 0 or not validate_key(key):
@@ -45,10 +44,10 @@ def encryption_algorithm(key, message):
 
 def decryption_algorithm(key, message):
     module = 26
-    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     if len(key) == 0 or not validate_key(key):
         key = generate_key(3)
-        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+
+    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     if not message:
         return " ", generate_key(3)
 
