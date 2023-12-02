@@ -84,12 +84,10 @@ def handle_block_window_event(window: sg.Window | None, event, values):
             input = values[algorithm_name + CLEAR_TEXT_INPUT_BOX]
             # Convert string to hex:
             hex_input = input.encode("latin-1").hex()
-            # print("Plain text in hex: ", hex)
             encrypted_text, key = mode(
                 hex_input, key, algorithm_fn, algorithm_name, encrypt=True
             )
             # Convert hex back to string:
-            # encrypted_text = bytes.fromhex(encrypted_text).decode('latin-1')
             window[algorithm_name + ENCRYPTED_TEXT_INPUT_BOX].update(encrypted_text)
             window[algorithm_name + KEY_INPUT].update(key)
         elif action in DECRYPT:

@@ -35,10 +35,7 @@ def cbc(plain_text, key, algorithm, algorithm_name, encrypt):
 
     if encrypt:
         # Perform xor between iv and the first block and cipher it
-        # print("iv:", iv)
-        # print("first block:", blocks[0])
         result = hex(int(iv, 16) ^ int(blocks[0], 16))[2:]
-        # print("xor:",result)
         result = pad_block(result, block_size)
         encrypted_result, key = algorithm(result, key)
         # Now, encrypt the other blocks using this result

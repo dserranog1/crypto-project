@@ -19,7 +19,6 @@ def ecb(plain_text, key, algorithm, algorithm_name, encrypt):
 
     # Convert the input text to hex:
 
-    # hex = plain_text.encode("latin-1").hex()
     if len(plain_text) == 0:
         return "", key
     if algorithm_name == "AES":
@@ -48,9 +47,4 @@ def ecb(plain_text, key, algorithm, algorithm_name, encrypt):
 
     cipher_text = "".join(encrypted_blocks)
 
-    # Convert the result back to string:
-    # print(cipher_text)
-    # byte_string = bytes.fromhex(cipher_text)
-    # result = byte_string.decode('latin-1')
-    print(cipher_text)
     return cipher_text, key

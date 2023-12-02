@@ -31,9 +31,7 @@ def encryption_algorithm(key, message):
     for i in range(0, len(message), key_size):
         chunk = message[i : i + key_size]
         chunk_indices = [ord(char) - ord("A") for char in chunk]
-        # print("Chunk indices: ", chunk_indices)
         encrypted_chunk_indices = np.dot(chunk_indices, key) % module
-        # print("Indices: ", encrypted_chunk_indices)
         encrypted_chunk = "".join(
             [chr(index + ord("A")) for index in encrypted_chunk_indices]
         )
@@ -103,7 +101,6 @@ def encrypt_image(key, image):
     # Pad the message if its length is not a multiple of the key size
     if image_len % key_size != 0:
         padding = key_size - (image % key_size)
-        print(padding)
         for i in range(padding):
             image.append(255)
 

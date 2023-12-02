@@ -6,7 +6,6 @@ from block.utils.common import is_binary, is_hex
 
 
 def valid_key(key):
-
     keys = key.split(" ")
     if len(keys) != 3:
         return False
@@ -18,19 +17,14 @@ def valid_key(key):
 
 
 def t_des_encrypt(block_of_64_bits, key):
-    # # implement t_des algorithm here
     if not key or not valid_key(key):
-        # key gen and validation
         key = generate_key()
 
-    # cipher_text_block = "tdes encrypt!"
-    # return cipher_text_block, key
     keys_arr = key.split(" ")
     if len(keys_arr) != 3:
         keys_arr = tres_claves()
 
     key_1, key_2, key_3 = keys_arr[0], keys_arr[1], keys_arr[2]
-    # print("generated keys before encryption", " ".join([key_1, key_2, key_3]))
 
     # Cifrar el texto plano con el primer algoritmo DES
     text_cifrado_1, key_1 = des_encrypt(block_of_64_bits, key_1)
@@ -40,13 +34,11 @@ def t_des_encrypt(block_of_64_bits, key):
 
     # Cifrar el texto cifrado con el tercer algoritmo DES
     text_cifrado_2, key_3 = des_encrypt(text_descifrado_2, key_3)
-    # print("used keys in encryption:", " ".join([key_1, key_2, key_3]))
 
     return text_cifrado_2, " ".join([key_1, key_2, key_3])
 
 
 def t_des_decrypt(block_of_64_bits, key):
-
     if not key or not valid_key(key):
         # key gen and validation
         key = generate_key()
