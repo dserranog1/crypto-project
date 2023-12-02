@@ -31,7 +31,7 @@
 #         block_size_bytes = 8 # 64 bits
 
 #     padded_message = pad_message(input_string, algorithm_name)
-    
+
 
 #     # Make sure each block is exactly 128 bits (16 bytes) by zero-padding if needed
 #     if len(padded_message) % block_size_bytes != 0:
@@ -46,6 +46,7 @@
 #     ]
 #     return blocks
 
+
 def split_string_into_blocks(input_string, block_size):
     if not input_string:
         return []
@@ -59,6 +60,7 @@ def split_string_into_blocks(input_string, block_size):
 
     return blocks
 
+
 def pad_block(block, size):
     return "0" * (size - len(block)) + block
 
@@ -67,17 +69,19 @@ def ctr(plain_text, key, algorithm, algorithm_name, encrypt):
     # algorithm is a function, it can be AES or DES, mode should be agnostic to what algorithm is being used
     # use it as you would with any other function: e.g.
     # cipher_block, key = algorithm(block_of_plain_text)
-    
+
     if algorithm_name == "AES":
         block_size = 32
     elif algorithm_name in ["DES", "TDES"]:
         block_size = 16
 
+    if len(plain_text) == 0:
+        return "", key
 
     blocks = split_string_into_blocks(plain_text, block_size)
 
     # generate list of nonces
-    
+
     nonce_list = []
 
     for i in range(len(blocks)):
@@ -100,12 +104,14 @@ def ctr(plain_text, key, algorithm, algorithm_name, encrypt):
     # Now we have 2 lists. One of message blocks and other of enctypted nonces. To cipher the message, we do xor of each block with its corresponding nonce
     # print("Encrypted nonce: ", encrypted_nonce)
     # print("Blocks:", blocks)
-    cipher_blocks = [hex(int(a, 16)^int(b,16))[2:] for a, b in zip(blocks, encrypted_nonce)]
+    cipher_blocks = [
+        hex(int(a, 16) ^ int(b, 16))[2:] for a, b in zip(blocks, encrypted_nonce)
+    ]
     cipher_blocks = [pad_block(block, block_size) for block in cipher_blocks]
 
     # print("Cipher blocks: ", cipher_blocks)
     # Join the list to have only a string
-    
+
     cipher_text = "".join(cipher_blocks)
-    
+
     return cipher_text, key
