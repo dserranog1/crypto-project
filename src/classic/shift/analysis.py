@@ -1,7 +1,6 @@
 # Module for crypto analysis
 import re
 
-# analisis con IA
 
 list_str = [
     "A",

@@ -47,10 +47,4 @@ def attack(texto_cifrado):
             f"Intento con desplazamiento {clave_descifrado}: {texto_descifrado}"
         ) + "\n"
         print(f"Intento con desplazamiento {clave_descifrado}: {texto_descifrado}")
-        # attack_result.append(
-        #     "\n"
-        #     + f"Intento con desplazamiento {clave_descifrado}: {texto_descifrado}"
-        #     + "\n"
-        # )
-        # attack_result.append({"Clave": clave_descifrado, "Texto": texto_descifrado})
     return attack_result
