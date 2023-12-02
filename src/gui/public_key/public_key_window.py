@@ -69,12 +69,10 @@ public_key_algorithms_manager = {
 
 def create_public_key_window():
     standard_tab = create_standard_tab()
-    sign_tab = create_sign_tab()
     Tg = sg.TabGroup(
         [
             [
                 standard_tab,
-                sign_tab,
             ]
         ]
     )
