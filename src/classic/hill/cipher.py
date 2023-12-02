@@ -86,11 +86,10 @@ def decryption_algorithm(key, message):
 def encrypt_image(key, image):
     # Validate the key or generate one if not provided
     module = 256
-    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
-    if len(key) == 0 or not validate_key(key, is_image=True):
+    if len(key) == 0 or not validate_key(key):
         key = generate_key(3)
-        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
 
+    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     # Check if the key is a numpy array
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
@@ -116,10 +115,10 @@ def encrypt_image(key, image):
 
 def decrypt_image(key, image):
     module = 256
-    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
-    if len(key) == 0 or not validate_key(key, is_image=True):
+    if len(key) == 0 or not validate_key(key):
         key = generate_key(3)
-        key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
+
+    key = np.array([row.split(" ") for row in key.split(";")]).astype(int)
     if not isinstance(key, np.ndarray):
         raise ValueError("Key must be a numpy array")
 
