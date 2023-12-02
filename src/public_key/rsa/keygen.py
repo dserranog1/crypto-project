@@ -29,6 +29,8 @@ def generate_key(primes=""):
     phi_n = (p - 1) * (q - 1)
 
     # Elegir un exponente público e que sea coprimo con phi_n
+    # se muere si cualquiera de los dos primos es dos o si los
+    # primos de eleccion son 3 y 5.
     b = random.randint(p + q, phi_n)
     while np.gcd(b, phi_n) != 1:
         b = random.randint(p + q, phi_n)
